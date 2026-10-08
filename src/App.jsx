@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import MetricCards from './components/MetricCards';
+import DashboardOverview from './components/DashboardOverview';
 import ForexTradingChart from './components/ForexTradingChart';
 import MLMNetworkSection from './components/MLMNetworkSection';
 import ExcelLedgerTable from './components/ExcelLedgerTable';
@@ -15,14 +15,7 @@ import LoginPage from './components/LoginPage';
 import { DepositModal, WithdrawModal, AddMemberModal } from './components/Modals';
 import { 
   CheckCircle2,
-  ExternalLink,
-  ArrowRight,
-  Copy,
-  Check,
-  Award,
-  Users,
-  TrendingUp,
-  FileSpreadsheet
+  ExternalLink
 } from 'lucide-react';
 
 export default function App() {
@@ -30,7 +23,6 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [linkCopied, setLinkCopied] = useState(false);
 
   const [stats, setStats] = useState({
     totalIncome: 182480.00,
@@ -58,13 +50,6 @@ export default function App() {
     setTimeout(() => {
       setToastMessage(null);
     }, 3000);
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://shipzo.international/register?ref=GAURAV_VIP");
-    setLinkCopied(true);
-    showToast("Referral link copied to clipboard!");
-    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   const tickerData = [
@@ -116,7 +101,7 @@ export default function App() {
       totalSpend: prev.totalSpend + pkg.price,
       todaySpend: prev.todaySpend + pkg.price,
     }));
-    showToast(`Purchased ${pkg.name} for $${pkg.price.toLocaleString()}!`);
+    showToast(`Successfully purchased ${pkg.name} for $${pkg.price.toLocaleString()}!`);
   };
 
   const handleLoginSuccess = (user) => {
@@ -126,7 +111,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0D14] text-slate-100 flex font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex font-sans overflow-x-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
@@ -146,7 +131,7 @@ export default function App() {
         walletBalance={walletBalance}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area (Offset by lg:pl-64 for fixed sidebar) */}
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
         {/* Top Header */}
         <Header
@@ -161,177 +146,24 @@ export default function App() {
         />
 
         {/* Dynamic Route Pages */}
-        <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 space-y-6">
-          {/* 1. SIMPLE & PROFESSIONAL DASHBOARD OVERVIEW */}
+        <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
+          {/* 1. Dashboard Clean Executive Overview */}
           {currentPage === 'dashboard' && (
-            <div className="space-y-6">
-              {/* Clean Welcome Bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2333]">
-                <div>
-                  <h1 className="text-lg font-semibold text-white tracking-tight">
-                    Executive Dashboard
-                  </h1>
-                  <p className="text-xs text-slate-400">
-                    Welcome back, Gaurav Sir · Shipzo Global Freight & Forex Terminal
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsDepositOpen(true)}
-                    className="square-btn px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs"
-                  >
-                    Quick Deposit
-                  </button>
-                  <button
-                    onClick={() => setIsWithdrawOpen(true)}
-                    className="square-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs"
-                  >
-                    Withdraw
-                  </button>
-                </div>
-              </div>
-
-              {/* 5 Clean Primary Metric Cards */}
-              <MetricCards stats={stats} />
-
-              {/* 2-Column Section: Chart (Left) + Quick Actions & Downline Summary (Right) */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left (2 Columns): Trading Terminal */}
-                <div className="lg:col-span-2 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                      Market Performance & Execution
-                    </h2>
-                    <button
-                      onClick={() => setCurrentPage('trading')}
-                      className="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-mono"
-                    >
-                      <span>Full Terminal</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-
-                  <ForexTradingChart
-                    walletBalance={walletBalance}
-                    onOrderPlaced={handleOrderPlaced}
-                  />
-                </div>
-
-                {/* Right (1 Column): Clean Referral & Rank Card */}
-                <div className="space-y-4">
-                  {/* Referral Link Card */}
-                  <div className="bg-[#11151F] border border-[#1C2333] p-4">
-                    <div className="text-xs font-semibold text-white mb-1">
-                      Affiliate Referral Link
-                    </div>
-                    <p className="text-xs text-slate-400 mb-3 leading-relaxed">
-                      Share with downline partners to earn up to 15% instant commission across 4 tiers.
-                    </p>
-
-                    <div className="bg-[#0A0D14] border border-[#1E2430] p-1.5 flex items-center justify-between gap-1.5 mb-3">
-                      <span className="font-mono text-xs text-slate-300 px-1 truncate">
-                        https://shipzo.international/ref=GAURAV_VIP
-                      </span>
-                      <button
-                        onClick={handleCopyLink}
-                        className={`square-btn px-2.5 py-1 text-xs shrink-0 flex items-center gap-1 ${
-                          linkCopied
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
-                        }`}
-                      >
-                        {linkCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                        <span>{linkCopied ? 'Copied' : 'Copy'}</span>
-                      </button>
-                    </div>
-
-                    <button
-                      onClick={() => setCurrentPage('network')}
-                      className="w-full square-btn py-1.5 bg-[#181E29] hover:bg-[#202838] text-slate-200 text-xs border border-slate-700 flex items-center justify-center gap-1.5"
-                    >
-                      <Users className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>View 4-Tier Network (282 Members)</span>
-                    </button>
-                  </div>
-
-                  {/* Diamond Rank & Progress */}
-                  <div className="bg-[#11151F] border border-[#1C2333] p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-semibold text-white">Career Milestone</span>
-                      <span className="text-[10px] font-mono text-amber-400 font-medium">Diamond Tier</span>
-                    </div>
-
-                    <div className="text-xs text-slate-400 mb-2">
-                      Progress to Crown Elite ($50,000 Reward):
-                    </div>
-
-                    <div className="w-full bg-[#0A0D14] h-2 border border-[#1E2430] mb-2">
-                      <div className="bg-emerald-500 h-full w-[84%]"></div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                      <span>$421,500 / $500,000 Volume</span>
-                      <span className="text-white font-bold">84%</span>
-                    </div>
-
-                    <button
-                      onClick={() => setCurrentPage('rewards')}
-                      className="w-full square-btn py-1.5 bg-[#181E29] hover:bg-[#202838] text-slate-200 text-xs border border-slate-700 mt-3 flex items-center justify-center gap-1.5"
-                    >
-                      <Award className="w-3.5 h-3.5 text-amber-400" />
-                      <span>View Rewards Ladder ($26k Claimed)</span>
-                    </button>
-                  </div>
-
-                  {/* Investment Lots Shortcut */}
-                  <div className="bg-[#11151F] border border-[#1C2333] p-4">
-                    <div className="text-xs font-semibold text-white mb-1">
-                      Container Freight Dividends
-                    </div>
-                    <p className="text-xs text-slate-400 mb-3">
-                      Generate 1.2% - 2.0% daily contract yields with international cargo shipping lots.
-                    </p>
-                    <button
-                      onClick={() => setCurrentPage('packages')}
-                      className="w-full square-btn py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium"
-                    >
-                      Explore Investment Lots
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Section: Excel Member Ledger Snapshot */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-                    <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
-                      Recent Downline Members & Activity
-                    </h2>
-                  </div>
-                  <button
-                    onClick={() => setCurrentPage('ledger')}
-                    className="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-mono"
-                  >
-                    <span>Open Full Excel Spreadsheet →</span>
-                  </button>
-                </div>
-
-                <ExcelLedgerTable
-                  onAddMemberClick={() => setIsAddMemberOpen(true)}
-                />
-              </div>
-            </div>
+            <DashboardOverview
+              stats={stats}
+              walletBalance={walletBalance}
+              onOpenDeposit={() => setIsDepositOpen(true)}
+              onOpenWithdraw={() => setIsWithdrawOpen(true)}
+              onNavigate={(page) => setCurrentPage(page)}
+            />
           )}
 
-          {/* 2. DEDICATED TRADING TERMINAL */}
+          {/* 2. Full Trading Terminal */}
           {currentPage === 'trading' && (
             <div className="space-y-4">
-              <div className="pb-3 border-b border-[#1C2333]">
-                <h1 className="text-base font-bold text-white">Forex & Freight Trading Terminal</h1>
-                <p className="text-xs text-slate-400">Institutional order execution and live chart analysis</p>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">Institutional Trading Terminal</h2>
+                <p className="text-xs text-slate-400">Forex currency pairs & Container Freight SCFI Index orders</p>
               </div>
               <ForexTradingChart
                 walletBalance={walletBalance}
@@ -340,7 +172,7 @@ export default function App() {
             </div>
           )}
 
-          {/* 3. CONTAINER LOTS & PACKAGES */}
+          {/* 3. Container Lots & Packages */}
           {currentPage === 'packages' && (
             <PackagesPage
               walletBalance={walletBalance}
@@ -348,28 +180,28 @@ export default function App() {
             />
           )}
 
-          {/* 4. 4-TIER AFFILIATES OVERVIEW */}
+          {/* 4. 4-Tier Affiliates */}
           {currentPage === 'network' && (
             <div className="space-y-4">
-              <div className="pb-3 border-b border-[#1C2333]">
-                <h1 className="text-base font-bold text-white">4-Tier Affiliate Commissions</h1>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">4-Tier Affiliate Commissions</h2>
                 <p className="text-xs text-slate-400">Direct referrals, team volumes, and matching payout rates</p>
               </div>
               <MLMNetworkSection />
             </div>
           )}
 
-          {/* 5. GENEALOGY TREE */}
+          {/* 5. Visual Genealogy Tree */}
           {currentPage === 'tree' && (
             <NetworkTreePage />
           )}
 
-          {/* 6. EXCEL MEMBER LEDGER */}
+          {/* 6. Excel Member Ledger */}
           {currentPage === 'ledger' && (
             <div className="space-y-4">
-              <div className="pb-3 border-b border-[#1C2333]">
-                <h1 className="text-base font-bold text-white">Excel Downline Database (.XLSX)</h1>
-                <p className="text-xs text-slate-400">Filter, search, and export members spreadsheet with CSV download</p>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">Excel Downline Database (.XLSX)</h2>
+                <p className="text-xs text-slate-400">Filter, search, and export members spreadsheet with real-time CSV download</p>
               </div>
               <ExcelLedgerTable
                 onAddMemberClick={() => setIsAddMemberOpen(true)}
@@ -377,12 +209,12 @@ export default function App() {
             </div>
           )}
 
-          {/* 7. LEADERSHIP RANKS & REWARDS */}
+          {/* 7. Leadership Ranks & Rewards */}
           {currentPage === 'rewards' && (
             <RankRewardsPage />
           )}
 
-          {/* 8. WALLET & PAYOUTS */}
+          {/* 8. Wallet & Payouts */}
           {currentPage === 'wallet' && (
             <WalletPage
               walletBalance={walletBalance}
@@ -391,19 +223,19 @@ export default function App() {
             />
           )}
 
-          {/* 9. FINANCIAL STATEMENTS */}
+          {/* 9. Financial Statements */}
           {currentPage === 'reports' && (
             <ReportsPage />
           )}
 
-          {/* 10. ACCOUNT SETTINGS */}
+          {/* 10. Account Settings */}
           {currentPage === 'settings' && (
             <SettingsPage
               onSave={(msg) => showToast(msg)}
             />
           )}
 
-          {/* 11. LOGIN / SIGN IN */}
+          {/* 11. Member Login / Sign In */}
           {currentPage === 'login' && (
             <LoginPage
               onLoginSuccess={handleLoginSuccess}
@@ -412,9 +244,9 @@ export default function App() {
           )}
         </main>
 
-        {/* Corporate Footer */}
-        <footer className="border-t border-[#1C2333] bg-[#0E121A] py-5 px-4 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
-          <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        {/* Clean Corporate Footer */}
+        <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
+          <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
             <div className="flex items-center gap-2">
               <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
               <span>· Global Logistics & Financial Market Access</span>

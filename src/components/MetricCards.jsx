@@ -1,109 +1,159 @@
 import React from 'react';
 import { 
-  TrendingUp, 
-  ArrowUpRight, 
+  DollarSign, 
+  Clock, 
+  CreditCard, 
+  WalletCards, 
   Users, 
-  Wallet, 
+  UserCheck, 
+  UserX, 
+  ShieldAlert, 
   Award, 
-  ShieldCheck,
-  CreditCard
+  CheckCircle2 
 } from 'lucide-react';
 
 export default function MetricCards({ stats }) {
-  const metrics = [
+  const cards = [
     {
+      id: 'total-income',
       title: 'Total Income',
       value: `$${stats.totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      sub: 'Today: $0.00',
-      badge: '+18.4%',
+      icon: DollarSign,
+      sub: 'All revenue streams',
+      trend: '+18.4%',
       isPositive: true
     },
     {
+      id: 'today-income',
+      title: 'Today Income',
+      value: `$${stats.todayIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      icon: Clock,
+      sub: 'Session in progress',
+      trend: '$0.00',
+      isNeutral: true
+    },
+    {
+      id: 'total-spend',
       title: 'Total Spend',
       value: `$${stats.totalSpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      sub: `Today: $${stats.todaySpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      badge: 'Invested',
-      isPositive: null
+      icon: CreditCard,
+      sub: 'Allocated lots',
+      trend: 'Capital',
+      isNeutral: true
     },
     {
+      id: 'today-spend',
+      title: 'Today Spend',
+      value: `$${stats.todaySpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      icon: WalletCards,
+      sub: '2 active lots',
+      trend: 'Today',
+      isNeutral: true
+    },
+    {
+      id: 'total-member',
       title: 'Total Members',
       value: stats.totalMembers.toString(),
-      sub: `Active: ${stats.activeMembers} | Inactive: ${stats.inactiveMembers}`,
-      badge: `${((stats.activeMembers / stats.totalMembers) * 100).toFixed(0)}% Active`,
+      icon: Users,
+      sub: 'All generations',
+      trend: 'Network',
+      isNeutral: true
+    },
+    {
+      id: 'active-member',
+      title: 'Active Members',
+      value: stats.activeMembers.toString(),
+      icon: UserCheck,
+      sub: 'Earning daily ROI',
+      trend: '71.2%',
       isPositive: true
     },
     {
+      id: 'inactive-member',
+      title: 'Inactive Members',
+      value: stats.inactiveMembers.toString(),
+      icon: UserX,
+      sub: 'Pending KYC/Lot',
+      trend: '81 pending',
+      isNeutral: true
+    },
+    {
+      id: 'block-member',
+      title: 'Blocked Members',
+      value: stats.blockMembers.toString(),
+      icon: ShieldAlert,
+      sub: 'Compliance clear',
+      trend: '0 issues',
+      isNeutral: true
+    },
+    {
+      id: 'rank-rewards',
       title: 'Rank & Rewards',
       value: `$${stats.rankRewards.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      sub: 'Diamond Ambassador Tier',
-      badge: 'VIP Tier 4',
-      isPositive: null
+      icon: Award,
+      sub: 'Diamond Ambassador',
+      trend: 'Tier 4',
+      isSpecial: true
     },
     {
+      id: 'paid-withdrawal',
       title: 'Paid Withdrawals',
       value: `$${stats.paidWithdrawal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      sub: '100% Settled to USDT',
-      badge: 'Completed',
+      icon: CheckCircle2,
+      sub: '100% Settled to wallet',
+      trend: 'Settled',
       isPositive: true
     },
-  ];
-
-  const secondaryStats = [
-    { label: 'Today Income', val: `$${stats.todayIncome.toFixed(2)}` },
-    { label: 'Today Spend', val: `$${stats.todaySpend.toFixed(2)}` },
-    { label: 'Active Members', val: stats.activeMembers.toString() },
-    { label: 'Inactive Members', val: stats.inactiveMembers.toString() },
-    { label: 'Blocked Members', val: stats.blockMembers.toString() },
   ];
 
   return (
-    <section className="mb-6 space-y-3">
-      {/* 5 Primary Clean Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        {metrics.map((m, idx) => (
-          <div
-            key={idx}
-            className="bg-[#11151F] border border-[#1C2333] p-4 flex flex-col justify-between hover:border-slate-700 transition-colors"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-slate-400 font-medium">
-                  {m.title}
-                </span>
-                {m.badge && (
-                  <span className={`text-[10px] px-1.5 py-0.5 font-mono ${
-                    m.isPositive
-                      ? 'text-emerald-400 bg-emerald-950/30'
-                      : 'text-slate-400 bg-slate-800/40'
-                  }`}>
-                    {m.badge}
-                  </span>
-                )}
-              </div>
-
-              <div className="font-mono text-xl xl:text-2xl font-semibold text-white tracking-tight mb-2">
-                {m.value}
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-[#181F2E] text-[11px] text-slate-500 font-mono truncate">
-              {m.sub}
-            </div>
-          </div>
-        ))}
+    <section className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Executive Summary
+        </h2>
+        <span className="text-[11px] text-slate-500 font-mono">10 Key Performance Indicators</span>
       </div>
 
-      {/* Secondary Quick Strip (Clean, unobtrusive data row) */}
-      <div className="bg-[#0D111A] border border-[#181F2E] px-4 py-2.5 hidden md:flex items-center justify-between text-xs font-mono text-slate-400">
-        <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
-          Session Sub-Metrics:
-        </span>
-        {secondaryStats.map((s, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <span className="text-slate-500">{s.label}:</span>
-            <span className="text-slate-200 font-medium">{s.val}</span>
-          </div>
-        ))}
+      {/* Clean, minimalist 5-col desktop / 2-col mobile cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        {cards.map((card) => {
+          const Icon = card.icon;
+          return (
+            <div
+              key={card.id}
+              className="bg-[#0E121A] border border-[#1E2430] p-3.5 flex flex-col justify-between hover:border-slate-700 transition-colors"
+            >
+              <div>
+                <div className="flex items-center justify-between text-slate-400 mb-2">
+                  <span className="text-xs font-medium text-slate-300 truncate">
+                    {card.title}
+                  </span>
+                  <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </div>
+
+                <div className="font-mono text-lg sm:text-xl font-bold text-white tracking-tight mb-2 truncate">
+                  {card.value}
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-[#181E29] flex items-center justify-between text-[11px]">
+                <span className="text-slate-500 text-[10px] truncate max-w-[85px] sm:max-w-[110px]">
+                  {card.sub}
+                </span>
+                <span className={`text-[10px] font-mono font-medium ${
+                  card.isPositive 
+                    ? 'text-emerald-400' 
+                    : card.isSpecial
+                    ? 'text-amber-400'
+                    : 'text-slate-400'
+                }`}>
+                  {card.trend}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
