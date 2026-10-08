@@ -123,10 +123,10 @@ export default function App() {
     showToast('You have been signed out.');
   };
 
-  // 1. If NOT logged in, show the Login Page first as requested!
+  // 1. If NOT logged in, show the full 50/50 split Login Page first as requested!
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex flex-col justify-between font-sans">
+      <>
         {/* Toast Notification */}
         {toastMessage && (
           <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
@@ -135,42 +135,8 @@ export default function App() {
           </div>
         )}
 
-        {/* Minimal Auth Header */}
-        <header className="border-b border-[#1E2430] bg-[#0E121A] py-2.5 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="bg-white px-2 py-0.5 border border-slate-300/30 shadow-xs h-8 sm:h-9 flex items-center">
-              <img 
-                src="/shipzo-logo.png" 
-                alt="SHIPZO Containers & Forex" 
-                className="h-6 sm:h-7 w-auto object-contain"
-              />
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 px-2.5 py-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Secure Gateway</span>
-            </div>
-          </div>
-        </header>
-
-        {/* Main Center Login Screen */}
-        <main className="flex-1 flex items-center justify-center p-3 sm:p-6 my-2 sm:my-4">
-          <LoginPage onLoginSuccess={handleLoginSuccess} />
-        </main>
-
-        {/* Auth Footer */}
-        <footer className="border-t border-[#1E2430] bg-[#0E121A] py-3.5 px-4 text-center text-xs text-slate-500">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px]">
-            <span>© 2026 Shipzo Containers & Forex Ltd. All Rights Reserved.</span>
-            <div className="flex items-center gap-3">
-              <span>Shanghai Port Hub</span>
-              <span>•</span>
-              <span>Mumbai Logistics Center</span>
-              <span>•</span>
-              <span>256-Bit SSL Encrypted</span>
-            </div>
-          </div>
-        </footer>
-      </div>
+        <LoginPage onLoginSuccess={handleLoginSuccess} />
+      </>
     );
   }
 
