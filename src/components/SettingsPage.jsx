@@ -38,9 +38,9 @@ export default function SettingsPage({ onSave }) {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E2430]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430]">
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">
+          <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
             Account & Security Settings
           </h2>
           <p className="text-xs text-slate-400">
@@ -57,7 +57,7 @@ export default function SettingsPage({ onSave }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-[#1E2430] overflow-x-auto whitespace-nowrap scrollbar-none">
+      <div className="flex items-center gap-1 border-b border-[#1E2430] overflow-x-auto whitespace-nowrap scrollbar-none pb-0.5">
         {[
           { id: 'profile', label: 'Trader Profile', icon: User },
           { id: 'security', label: 'Security & 2FA', icon: Lock },
@@ -69,7 +69,7 @@ export default function SettingsPage({ onSave }) {
             <button
               key={t.id}
               onClick={() => setActiveSubTab(t.id)}
-              className={`square-btn px-3 py-2 text-xs flex items-center gap-2 border-b-2 font-medium ${
+              className={`square-btn px-2.5 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs flex items-center gap-1.5 sm:gap-2 border-b-2 font-medium shrink-0 ${
                 activeSubTab === t.id
                   ? 'border-white text-white bg-[#12161F]'
                   : 'border-transparent text-slate-400 hover:text-white'

@@ -135,9 +135,15 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
         ))}
       </div>
 
+      {/* Mobile Swipe Cue */}
+      <div className="text-[10px] text-slate-500 mb-1.5 sm:hidden font-mono flex items-center justify-between">
+        <span>← Swipe horizontally to view all columns →</span>
+        <span>{filteredData.length} records</span>
+      </div>
+
       {/* Spreadsheet Table with smooth horizontal scroll container */}
-      <div className="overflow-x-auto border border-[#1E2430]">
-        <table className="excel-table text-left min-w-[700px]">
+      <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 border-y sm:border border-[#1E2430]">
+        <table className="excel-table text-left min-w-[720px]">
           <thead>
             <tr>
               <th className="w-10 text-center">#</th>

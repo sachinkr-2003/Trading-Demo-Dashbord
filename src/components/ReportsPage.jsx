@@ -38,9 +38,9 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E2430]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430]">
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">
+          <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
             Financial Statements & Accounting Reports
           </h2>
           <p className="text-xs text-slate-400">
@@ -50,49 +50,49 @@ export default function ReportsPage() {
 
         <button
           onClick={handleDownloadReport}
-          className="square-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs flex items-center gap-1.5"
+          className="square-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs flex items-center gap-1.5 shrink-0"
         >
           <Download className="w-3.5 h-3.5" />
-          <span>Export Accounting Statement</span>
+          <span>Export Statement (.CSV)</span>
         </button>
       </div>
 
       {/* Revenue Stream Breakdown */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-        <div className="square-card p-4">
-          <div className="text-xs text-slate-400">Affiliate Matching</div>
-          <div className="font-mono text-xl font-bold text-white">$48,200.00</div>
-          <div className="text-[10px] text-emerald-400">26.4% of Total Revenue</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+        <div className="bg-[#0E121A] border border-[#1E2430] p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-slate-400">Affiliate Matching</div>
+          <div className="font-mono text-base xs:text-lg sm:text-xl font-bold text-white">$48,200.00</div>
+          <div className="text-[9px] sm:text-[10px] text-emerald-400">26.4% Total</div>
         </div>
 
-        <div className="square-card p-4">
-          <div className="text-xs text-slate-400">Container Dividends</div>
-          <div className="font-mono text-xl font-bold text-white">$64,800.00</div>
-          <div className="text-[10px] text-emerald-400">35.5% of Total Revenue</div>
+        <div className="bg-[#0E121A] border border-[#1E2430] p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-slate-400">Container Dividends</div>
+          <div className="font-mono text-base xs:text-lg sm:text-xl font-bold text-white">$64,800.00</div>
+          <div className="text-[9px] sm:text-[10px] text-emerald-400">35.5% Total</div>
         </div>
 
-        <div className="square-card p-4">
-          <div className="text-xs text-slate-400">Forex Trading P&L</div>
-          <div className="font-mono text-xl font-bold text-white">$43,443.67</div>
-          <div className="text-[10px] text-emerald-400">23.8% of Total Revenue</div>
+        <div className="bg-[#0E121A] border border-[#1E2430] p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-slate-400">Forex Trading P&L</div>
+          <div className="font-mono text-base xs:text-lg sm:text-xl font-bold text-white">$43,443.67</div>
+          <div className="text-[9px] sm:text-[10px] text-emerald-400">23.8% Total</div>
         </div>
 
-        <div className="square-card p-4">
-          <div className="text-xs text-slate-400">Rank Milestone Rewards</div>
-          <div className="font-mono text-xl font-bold text-amber-400">$26,036.33</div>
-          <div className="text-[10px] text-slate-400">14.3% of Total Revenue</div>
+        <div className="bg-[#0E121A] border border-[#1E2430] p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-slate-400">Rank Rewards</div>
+          <div className="font-mono text-base xs:text-lg sm:text-xl font-bold text-amber-400">$26,036.33</div>
+          <div className="text-[9px] sm:text-[10px] text-slate-400">14.3% Total</div>
         </div>
       </div>
 
       {/* Detailed Statements Table */}
-      <div className="square-card p-4">
+      <div className="bg-[#0E121A] border border-[#1E2430] p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430] mb-3">
           <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
             Ledger Audit Log
           </h3>
 
           {/* Filter options */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap scrollbar-none pb-0.5">
             {[
               { id: 'ALL', label: 'All Streams' },
               { id: 'DIVIDEND', label: 'Dividends' },
@@ -102,7 +102,7 @@ export default function ReportsPage() {
               <button
                 key={f.id}
                 onClick={() => setReportType(f.id)}
-                className={`square-btn px-2.5 py-1 text-xs border ${
+                className={`square-btn px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs border shrink-0 ${
                   reportType === f.id
                     ? 'bg-[#1E2430] text-white border-slate-500 font-medium'
                     : 'bg-[#0A0D14] text-slate-400 border-[#1E2430] hover:text-white'
@@ -114,8 +114,14 @@ export default function ReportsPage() {
           </div>
         </div>
 
-        <div className="overflow-x-auto border border-[#1E2430]">
-          <table className="excel-table text-left min-w-[650px]">
+        {/* Mobile Swipe Cue */}
+        <div className="text-[10px] text-slate-500 mb-1.5 sm:hidden font-mono flex items-center justify-between">
+          <span>← Swipe horizontally to view statements →</span>
+          <span>{filteredStatements.length} vouchers</span>
+        </div>
+
+        <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0 border-y sm:border border-[#1E2430]">
+          <table className="excel-table text-left min-w-[620px]">
             <thead>
               <tr>
                 <th>Voucher #</th>

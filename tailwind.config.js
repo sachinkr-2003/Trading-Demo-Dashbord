@@ -10,6 +10,9 @@ export default {
         sans: ['Inter', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
+      screens: {
+        'xs': '420px',
+      },
       colors: {
         brand: {
           dark: '#080C14',

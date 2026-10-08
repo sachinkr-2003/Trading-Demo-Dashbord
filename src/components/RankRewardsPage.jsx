@@ -64,9 +64,9 @@ export default function RankRewardsPage({ onClaimReward }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E2430]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430]">
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">
+          <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
             Leadership Ranks & Career Milestone Rewards
           </h2>
           <p className="text-xs text-slate-400">

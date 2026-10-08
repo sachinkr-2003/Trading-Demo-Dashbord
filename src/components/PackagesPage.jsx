@@ -99,9 +99,9 @@ export default function PackagesPage({ walletBalance, onBuyPackage }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E2430]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430]">
         <div>
-          <h2 className="text-base font-bold text-white tracking-tight">
+          <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
             Container Logistics & Forex Investment Packages
           </h2>
           <p className="text-xs text-slate-400">
@@ -117,7 +117,7 @@ export default function PackagesPage({ walletBalance, onBuyPackage }) {
       </div>
 
       {/* Package Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
         {PACKAGES.map((pkg) => {
           const isSelected = activePlan === pkg.id;
           return (

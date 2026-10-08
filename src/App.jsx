@@ -111,7 +111,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex font-sans">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">

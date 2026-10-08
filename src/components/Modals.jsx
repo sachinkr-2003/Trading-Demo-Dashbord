@@ -28,8 +28,8 @@ export function DepositModal({ isOpen, onClose, onDepositSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-5">
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-4 sm:p-5 my-auto max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#1E2430] mb-4">
           <h3 className="text-sm font-semibold text-white">
             Deposit Funds
@@ -137,8 +137,8 @@ export function WithdrawModal({ isOpen, onClose, onWithdrawSuccess, walletBalanc
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-5">
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-4 sm:p-5 my-auto max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#1E2430] mb-4">
           <h3 className="text-sm font-semibold text-white">
             Withdraw Funds
@@ -222,8 +222,8 @@ export function AddMemberModal({ isOpen, onClose, onAddMember }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-5">
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="square-card bg-[#12161F] border border-[#1E2430] w-full max-w-md p-4 sm:p-5 my-auto max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-[#1E2430] mb-4">
           <h3 className="text-sm font-semibold text-white">
             Add Downline Member

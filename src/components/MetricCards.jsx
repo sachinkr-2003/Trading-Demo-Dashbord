@@ -19,7 +19,7 @@ export default function MetricCards({ stats }) {
       title: 'Total Income',
       value: `$${stats.totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       icon: DollarSign,
-      sub: 'All revenue streams',
+      sub: 'All streams',
       trend: '+18.4%',
       isPositive: true
     },
@@ -28,7 +28,7 @@ export default function MetricCards({ stats }) {
       title: 'Today Income',
       value: `$${stats.todayIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       icon: Clock,
-      sub: 'Session in progress',
+      sub: 'Active session',
       trend: '$0.00',
       isNeutral: true
     },
@@ -37,7 +37,7 @@ export default function MetricCards({ stats }) {
       title: 'Total Spend',
       value: `$${stats.totalSpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       icon: CreditCard,
-      sub: 'Allocated lots',
+      sub: 'Purchased lots',
       trend: 'Capital',
       isNeutral: true
     },
@@ -55,7 +55,7 @@ export default function MetricCards({ stats }) {
       title: 'Total Members',
       value: stats.totalMembers.toString(),
       icon: Users,
-      sub: 'All generations',
+      sub: 'All downlines',
       trend: 'Network',
       isNeutral: true
     },
@@ -64,7 +64,7 @@ export default function MetricCards({ stats }) {
       title: 'Active Members',
       value: stats.activeMembers.toString(),
       icon: UserCheck,
-      sub: 'Earning daily ROI',
+      sub: 'Daily ROI',
       trend: '71.2%',
       isPositive: true
     },
@@ -73,8 +73,8 @@ export default function MetricCards({ stats }) {
       title: 'Inactive Members',
       value: stats.inactiveMembers.toString(),
       icon: UserX,
-      sub: 'Pending KYC/Lot',
-      trend: '81 pending',
+      sub: 'Unverified',
+      trend: '81 pen.',
       isNeutral: true
     },
     {
@@ -82,13 +82,13 @@ export default function MetricCards({ stats }) {
       title: 'Blocked Members',
       value: stats.blockMembers.toString(),
       icon: ShieldAlert,
-      sub: 'Compliance clear',
-      trend: '0 issues',
+      sub: 'Clear check',
+      trend: '0 issue',
       isNeutral: true
     },
     {
       id: 'rank-rewards',
-      title: 'Rank & Rewards',
+      title: 'Rank Rewards',
       value: `$${stats.rankRewards.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       icon: Award,
       sub: 'Diamond Ambassador',
@@ -100,48 +100,48 @@ export default function MetricCards({ stats }) {
       title: 'Paid Withdrawals',
       value: `$${stats.paidWithdrawal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       icon: CheckCircle2,
-      sub: '100% Settled to wallet',
+      sub: '100% Settled',
       trend: 'Settled',
       isPositive: true
     },
   ];
 
   return (
-    <section className="mb-6">
-      <div className="flex items-center justify-between mb-3">
+    <section className="mb-5 sm:mb-6">
+      <div className="flex items-center justify-between mb-2.5">
         <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          Executive Summary
+          Account Overview
         </h2>
-        <span className="text-[11px] text-slate-500 font-mono">10 Key Performance Indicators</span>
+        <span className="text-[10px] sm:text-[11px] text-slate-500 font-mono">10 Key Metrics</span>
       </div>
 
-      {/* Clean, minimalist 5-col desktop / 2-col mobile cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      {/* Grid: 2 columns on mobile, 3 on tablet, 5 on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.id}
-              className="bg-[#0E121A] border border-[#1E2430] p-3.5 flex flex-col justify-between hover:border-slate-700 transition-colors"
+              className="bg-[#0E121A] border border-[#1E2430] p-2.5 sm:p-3.5 flex flex-col justify-between hover:border-slate-700 transition-colors"
             >
               <div>
-                <div className="flex items-center justify-between text-slate-400 mb-2">
-                  <span className="text-xs font-medium text-slate-300 truncate">
+                <div className="flex items-start justify-between text-slate-400 gap-1 mb-1.5 sm:mb-2">
+                  <span className="text-[11px] sm:text-xs font-medium text-slate-300 leading-tight">
                     {card.title}
                   </span>
-                  <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
                 </div>
 
-                <div className="font-mono text-lg sm:text-xl font-bold text-white tracking-tight mb-2 truncate">
+                <div className="font-mono text-sm xs:text-base sm:text-xl font-bold text-white tracking-tight mb-1 sm:mb-2 truncate">
                   {card.value}
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-[#181E29] flex items-center justify-between text-[11px]">
-                <span className="text-slate-500 text-[10px] truncate max-w-[85px] sm:max-w-[110px]">
+              <div className="pt-1.5 sm:pt-2 border-t border-[#181E29] flex items-center justify-between text-[10px] sm:text-[11px] gap-1">
+                <span className="text-slate-500 text-[9px] sm:text-[10px] truncate max-w-[65px] xs:max-w-[85px] sm:max-w-[110px]">
                   {card.sub}
                 </span>
-                <span className={`text-[10px] font-mono font-medium ${
+                <span className={`text-[9px] sm:text-[10px] font-mono font-medium shrink-0 ${
                   card.isPositive 
                     ? 'text-emerald-400' 
                     : card.isSpecial
