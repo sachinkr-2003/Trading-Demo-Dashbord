@@ -1,171 +1,109 @@
 import React from 'react';
 import { 
-  DollarSign, 
-  Clock, 
-  CreditCard, 
-  WalletCards, 
+  TrendingUp, 
+  ArrowUpRight, 
   Users, 
-  UserCheck, 
-  UserX, 
-  ShieldAlert, 
+  Wallet, 
   Award, 
-  CheckCircle2 
+  ShieldCheck,
+  CreditCard
 } from 'lucide-react';
 
 export default function MetricCards({ stats }) {
-  const cards = [
+  const metrics = [
     {
-      id: 'total-income',
       title: 'Total Income',
       value: `$${stats.totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: DollarSign,
-      iconBg: 'bg-emerald-500/10 text-emerald-400',
+      sub: 'Today: $0.00',
       badge: '+18.4%',
-      badgeType: 'pos',
-      sub: 'All revenue streams'
+      isPositive: true
     },
     {
-      id: 'today-income',
-      title: 'Today Income',
-      value: `$${stats.todayIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: Clock,
-      iconBg: 'bg-slate-800 text-slate-300',
-      badge: 'Today',
-      badgeType: 'neutral',
-      sub: 'Session in progress'
-    },
-    {
-      id: 'total-spend',
       title: 'Total Spend',
       value: `$${stats.totalSpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: CreditCard,
-      iconBg: 'bg-blue-500/10 text-blue-400',
+      sub: `Today: $${stats.todaySpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
       badge: 'Invested',
-      badgeType: 'neutral',
-      sub: 'Active investments'
+      isPositive: null
     },
     {
-      id: 'today-spend',
-      title: 'Today Spend',
-      value: `$${stats.todaySpend.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: WalletCards,
-      iconBg: 'bg-slate-800 text-slate-300',
-      badge: '2 Lots',
-      badgeType: 'neutral',
-      sub: 'Container lots'
-    },
-    {
-      id: 'total-member',
-      title: 'Total Member',
+      title: 'Total Members',
       value: stats.totalMembers.toString(),
-      icon: Users,
-      iconBg: 'bg-slate-800 text-slate-300',
-      badge: 'Network',
-      badgeType: 'neutral',
-      sub: 'Downline team'
+      sub: `Active: ${stats.activeMembers} | Inactive: ${stats.inactiveMembers}`,
+      badge: `${((stats.activeMembers / stats.totalMembers) * 100).toFixed(0)}% Active`,
+      isPositive: true
     },
     {
-      id: 'active-member',
-      title: 'Total Active Member',
-      value: stats.activeMembers.toString(),
-      icon: UserCheck,
-      iconBg: 'bg-emerald-500/10 text-emerald-400',
-      badge: 'Active',
-      badgeType: 'pos',
-      sub: 'Generating ROI'
-    },
-    {
-      id: 'inactive-member',
-      title: 'Total Inactive Member',
-      value: stats.inactiveMembers.toString(),
-      icon: UserX,
-      iconBg: 'bg-slate-800 text-slate-400',
-      badge: 'Pending',
-      badgeType: 'neutral',
-      sub: 'Unverified'
-    },
-    {
-      id: 'block-member',
-      title: 'Block Member',
-      value: stats.blockMembers.toString(),
-      icon: ShieldAlert,
-      iconBg: 'bg-slate-800 text-slate-400',
-      badge: 'Clear',
-      badgeType: 'neutral',
-      sub: 'Zero flagged'
-    },
-    {
-      id: 'rank-rewards',
-      title: 'My Rank and Rewards',
+      title: 'Rank & Rewards',
       value: `$${stats.rankRewards.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: Award,
-      iconBg: 'bg-amber-500/10 text-amber-400',
-      badge: 'Diamond',
-      badgeType: 'gold',
-      sub: 'Tier 4 Leader'
+      sub: 'Diamond Ambassador Tier',
+      badge: 'VIP Tier 4',
+      isPositive: null
     },
     {
-      id: 'paid-withdrawal',
-      title: 'Paid Withdrawal',
+      title: 'Paid Withdrawals',
       value: `$${stats.paidWithdrawal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
-      icon: CheckCircle2,
-      iconBg: 'bg-slate-800 text-slate-300',
-      badge: 'Settled',
-      badgeType: 'neutral',
-      sub: 'Wallet payouts'
+      sub: '100% Settled to USDT',
+      badge: 'Completed',
+      isPositive: true
     },
   ];
 
+  const secondaryStats = [
+    { label: 'Today Income', val: `$${stats.todayIncome.toFixed(2)}` },
+    { label: 'Today Spend', val: `$${stats.todaySpend.toFixed(2)}` },
+    { label: 'Active Members', val: stats.activeMembers.toString() },
+    { label: 'Inactive Members', val: stats.inactiveMembers.toString() },
+    { label: 'Blocked Members', val: stats.blockMembers.toString() },
+  ];
+
   return (
-    <section className="mb-6">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Account Overview
-        </h2>
-        <span className="text-[11px] text-slate-500">Live Telemetry</span>
-      </div>
-
-      {/* Grid: 2 columns on mobile (just like the screenshot!), 3 on tablet, 5 on desktop */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
-        {cards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <div
-              key={card.id}
-              className="square-card p-3 sm:p-3.5 flex flex-col justify-between hover:border-[#2D3748] transition-colors"
-            >
-              <div>
-                <div className="flex items-start justify-between gap-1.5 mb-1.5 sm:mb-2">
-                  <span className="text-[11px] sm:text-xs font-medium text-slate-400 leading-tight">
-                    {card.title}
+    <section className="mb-6 space-y-3">
+      {/* 5 Primary Clean Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {metrics.map((m, idx) => (
+          <div
+            key={idx}
+            className="bg-[#11151F] border border-[#1C2333] p-4 flex flex-col justify-between hover:border-slate-700 transition-colors"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-slate-400 font-medium">
+                  {m.title}
+                </span>
+                {m.badge && (
+                  <span className={`text-[10px] px-1.5 py-0.5 font-mono ${
+                    m.isPositive
+                      ? 'text-emerald-400 bg-emerald-950/30'
+                      : 'text-slate-400 bg-slate-800/40'
+                  }`}>
+                    {m.badge}
                   </span>
-                  <div className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 flex items-center justify-center ${card.iconBg}`}>
-                    <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                  </div>
-                </div>
-
-                <div className="font-mono text-base sm:text-xl font-bold text-white tracking-tight mb-1 sm:mb-2 truncate">
-                  {card.value}
-                </div>
+                )}
               </div>
 
-              <div className="pt-1.5 sm:pt-2 border-t border-[#181E29] flex items-center justify-between text-[10px] sm:text-[11px] gap-1">
-                <span className="text-slate-500 text-[10px] truncate max-w-[75px] sm:max-w-[110px] hidden xs:inline">
-                  {card.sub}
-                </span>
-                <span className={`px-1.5 py-0.2 text-[9px] sm:text-[10px] font-medium ml-auto ${
-                  card.badgeType === 'pos' 
-                    ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-800/50' 
-                    : card.badgeType === 'gold'
-                    ? 'text-amber-400 bg-amber-950/40 border border-amber-800/50'
-                    : 'text-slate-400 bg-slate-800/50 border border-slate-700/60'
-                }`}>
-                  {card.badge}
-                </span>
+              <div className="font-mono text-xl xl:text-2xl font-semibold text-white tracking-tight mb-2">
+                {m.value}
               </div>
             </div>
-          );
-        })}
+
+            <div className="pt-2 border-t border-[#181F2E] text-[11px] text-slate-500 font-mono truncate">
+              {m.sub}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Secondary Quick Strip (Clean, unobtrusive data row) */}
+      <div className="bg-[#0D111A] border border-[#181F2E] px-4 py-2.5 hidden md:flex items-center justify-between text-xs font-mono text-slate-400">
+        <span className="text-[11px] text-slate-500 uppercase tracking-wider font-semibold">
+          Session Sub-Metrics:
+        </span>
+        {secondaryStats.map((s, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <span className="text-slate-500">{s.label}:</span>
+            <span className="text-slate-200 font-medium">{s.val}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
