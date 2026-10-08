@@ -5,6 +5,10 @@ import MetricCards from './components/MetricCards';
 import ForexTradingChart from './components/ForexTradingChart';
 import MLMNetworkSection from './components/MLMNetworkSection';
 import ExcelLedgerTable from './components/ExcelLedgerTable';
+import PackagesPage from './components/PackagesPage';
+import NetworkTreePage from './components/NetworkTreePage';
+import RankRewardsPage from './components/RankRewardsPage';
+import ReportsPage from './components/ReportsPage';
 import SettingsPage from './components/SettingsPage';
 import WalletPage from './components/WalletPage';
 import LoginPage from './components/LoginPage';
@@ -16,7 +20,7 @@ import {
 
 export default function App() {
   const [walletBalance, setWalletBalance] = useState(111941.50);
-  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'trading', 'network', 'ledger', 'wallet', 'settings', 'login'
+  const [currentPage, setCurrentPage] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
@@ -90,6 +94,16 @@ export default function App() {
     showToast(`Member ${member.name} (${member.id}) added to ledger.`);
   };
 
+  const handleBuyPackage = (pkg) => {
+    setWalletBalance((prev) => prev - pkg.price);
+    setStats((prev) => ({
+      ...prev,
+      totalSpend: prev.totalSpend + pkg.price,
+      todaySpend: prev.todaySpend + pkg.price,
+    }));
+    showToast(`Successfully purchased ${pkg.name} for $${pkg.price.toLocaleString()}!`);
+  };
+
   const handleLoginSuccess = (user) => {
     setIsLoggedIn(true);
     setCurrentPage('dashboard');
@@ -106,7 +120,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Sidebar Drawer */}
+      {/* FIXED Left Sidebar */}
       <Sidebar
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -117,8 +131,8 @@ export default function App() {
         walletBalance={walletBalance}
       />
 
-      {/* Main Layout Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Main Content Area (Offset by lg:pl-64 for fixed sidebar) */}
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
         {/* Top Header */}
         <Header
           walletBalance={walletBalance}
@@ -131,9 +145,9 @@ export default function App() {
           isLoggedIn={isLoggedIn}
         />
 
-        {/* Dynamic Page Router */}
+        {/* Dynamic Route Pages */}
         <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
-          {/* 1. Full Dashboard Overview */}
+          {/* 1. Dashboard Overview */}
           {currentPage === 'dashboard' && (
             <>
               <MetricCards stats={stats} />
@@ -148,14 +162,12 @@ export default function App() {
             </>
           )}
 
-          {/* 2. Trading Terminal Only */}
+          {/* 2. Trading Terminal */}
           {currentPage === 'trading' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
-                <div>
-                  <h2 className="text-base font-bold text-white">Forex & Freight Trading Terminal</h2>
-                  <p className="text-xs text-slate-400">Institutional order execution and live chart analysis</p>
-                </div>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">Institutional Trading Terminal</h2>
+                <p className="text-xs text-slate-400">Forex currency pairs & Container Freight SCFI Index orders</p>
               </div>
               <ForexTradingChart
                 walletBalance={walletBalance}
@@ -164,30 +176,36 @@ export default function App() {
             </div>
           )}
 
-          {/* 3. My Network & MLM */}
+          {/* 3. Container Lots & Packages */}
+          {currentPage === 'packages' && (
+            <PackagesPage
+              walletBalance={walletBalance}
+              onBuyPackage={handleBuyPackage}
+            />
+          )}
+
+          {/* 4. 4-Tier Affiliates */}
           {currentPage === 'network' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
-                <div>
-                  <h2 className="text-base font-bold text-white">Downline Affiliate & MLM Hierarchy</h2>
-                  <p className="text-xs text-slate-400">Manage 4-tier network volume, matching bonuses, and sponsor referral links</p>
-                </div>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">4-Tier Affiliate Commissions</h2>
+                <p className="text-xs text-slate-400">Direct referrals, team volumes, and matching payout rates</p>
               </div>
               <MLMNetworkSection />
-              <ExcelLedgerTable
-                onAddMemberClick={() => setIsAddMemberOpen(true)}
-              />
             </div>
           )}
 
-          {/* 4. Excel Ledger Spreadsheet */}
+          {/* 5. Visual Genealogy Tree */}
+          {currentPage === 'tree' && (
+            <NetworkTreePage />
+          )}
+
+          {/* 6. Excel Member Ledger */}
           {currentPage === 'ledger' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
-                <div>
-                  <h2 className="text-base font-bold text-white">Excel Member Ledger (.XLSX)</h2>
-                  <p className="text-xs text-slate-400">Exportable database of active, inactive, and blocked downline accounts</p>
-                </div>
+              <div className="pb-3 border-b border-[#1E2430]">
+                <h2 className="text-base font-bold text-white">Excel Downline Database (.XLSX)</h2>
+                <p className="text-xs text-slate-400">Filter, search, and export members spreadsheet with real-time CSV download</p>
               </div>
               <ExcelLedgerTable
                 onAddMemberClick={() => setIsAddMemberOpen(true)}
@@ -195,7 +213,12 @@ export default function App() {
             </div>
           )}
 
-          {/* 5. Wallet & Payouts */}
+          {/* 7. Leadership Ranks & Rewards */}
+          {currentPage === 'rewards' && (
+            <RankRewardsPage />
+          )}
+
+          {/* 8. Wallet & Payouts */}
           {currentPage === 'wallet' && (
             <WalletPage
               walletBalance={walletBalance}
@@ -204,14 +227,19 @@ export default function App() {
             />
           )}
 
-          {/* 6. Settings Page */}
+          {/* 9. Financial Statements */}
+          {currentPage === 'reports' && (
+            <ReportsPage />
+          )}
+
+          {/* 10. Account Settings */}
           {currentPage === 'settings' && (
             <SettingsPage
               onSave={(msg) => showToast(msg)}
             />
           )}
 
-          {/* 7. Login / Register Page */}
+          {/* 11. Member Login / Sign In */}
           {currentPage === 'login' && (
             <LoginPage
               onLoginSuccess={handleLoginSuccess}
@@ -220,16 +248,18 @@ export default function App() {
           )}
         </main>
 
-        {/* Corporate Footer */}
+        {/* Clean Corporate Footer */}
         <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
           <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
             <div className="flex items-center gap-2">
               <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
-              <span>· Global Trade Platform</span>
+              <span>· Global Logistics & Financial Market Access</span>
             </div>
 
             <div className="flex items-center gap-4 text-[11px]">
-              <span>Shanghai & Mumbai Port Hubs</span>
+              <span>Shanghai Port Hub</span>
+              <span>•</span>
+              <span>Mumbai Logistics Center</span>
               <span>•</span>
               <a 
                 href="https://shipzo.netlify.app/" 
