@@ -23,8 +23,12 @@ export default function Sidebar({
   setIsOpen,
   isLoggedIn,
   setIsLoggedIn,
+  currentUser,
   walletBalance 
 }) {
+  const userName = currentUser?.name || 'Gaurav Sir';
+  const userInitial = userName.charAt(0).toUpperCase();
+  const userRole = currentUser?.role || 'Diamond VIP Tier';
   const navSections = [
     {
       category: 'Core Trading',
@@ -105,15 +109,15 @@ export default function Sidebar({
             <div className="p-2.5 bg-[#12161F] border border-[#1E2430]">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-semibold shrink-0">
-                  G
+                  {userInitial}
                 </div>
                 <div className="overflow-hidden">
                   <div className="text-xs font-semibold text-white flex items-center gap-1 truncate">
-                    Gaurav Sir
+                    {userName}
                     <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
                   </div>
-                  <div className="text-[10px] text-amber-400 font-mono">
-                    Diamond VIP Tier
+                  <div className="text-[10px] text-amber-400 font-mono truncate">
+                    {userRole}
                   </div>
                 </div>
               </div>

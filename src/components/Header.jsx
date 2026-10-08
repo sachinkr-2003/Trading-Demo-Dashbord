@@ -15,10 +15,14 @@ export default function Header({
   walletBalance, 
   tickerData,
   onToggleSidebar,
+  currentUser,
   onNavigateSettings,
   onNavigateLogin,
   isLoggedIn
 }) {
+  const userName = currentUser?.name || 'Gaurav Sir';
+  const userInitial = userName.charAt(0).toUpperCase();
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#1E2430] bg-[#0E121A]/95 backdrop-blur-md shadow-md">
       {/* Live Market Ticker Strip (Smooth Horizontal Scroll on Mobile) */}
@@ -121,11 +125,11 @@ export default function Header({
                 title="Account Settings"
               >
                 <div className="w-6 h-6 sm:w-7 sm:h-7 bg-slate-700 text-slate-200 flex items-center justify-center text-[10px] sm:text-xs font-semibold shrink-0">
-                  G
+                  {userInitial}
                 </div>
                 <div className="hidden md:block">
                   <div className="text-xs font-medium text-slate-200 flex items-center gap-1">
-                    Gaurav Sir
+                    {userName}
                     <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                   </div>
                   <div className="text-[10px] text-slate-400">Settings</div>
