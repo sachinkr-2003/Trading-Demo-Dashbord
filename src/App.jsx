@@ -89,12 +89,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex flex-col font-sans overflow-x-hidden">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
+        <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>{toastMessage}</span>
+          <span className="truncate">{toastMessage}</span>
         </div>
       )}
 
@@ -106,13 +106,13 @@ export default function App() {
         onOpenWithdraw={() => setIsWithdrawOpen(true)}
       />
 
-      {/* Sub Navigation Bar */}
+      {/* Sub Navigation Bar (Mobile Swipeable Tabs) */}
       <div className="border-b border-[#1E2430] bg-[#0E121A]">
-        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-3">
+        <div className="max-w-[1680px] mx-auto px-3 sm:px-6 py-2 flex items-center justify-between gap-3">
           {/* Tabs */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 w-full sm:w-auto">
             {[
-              { id: 'ALL', label: 'All Sections', icon: Layers },
+              { id: 'ALL', label: 'Overview', icon: Layers },
               { id: 'TRADING', label: 'Trading Chart', icon: TrendingUp },
               { id: 'MLM', label: 'Affiliates', icon: Users },
               { id: 'EXCEL', label: 'Member Ledger', icon: FileSpreadsheet },
@@ -122,7 +122,7 @@ export default function App() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`square-btn px-3 py-1.5 text-xs flex items-center gap-1.5 border ${
+                  className={`square-btn px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1.5 border shrink-0 ${
                     activeTab === tab.id
                       ? 'bg-[#1E2430] text-white border-slate-600 font-medium'
                       : 'bg-transparent text-slate-400 border-transparent hover:text-white'
@@ -135,8 +135,8 @@ export default function App() {
             })}
           </div>
 
-          {/* Quick info */}
-          <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 font-mono">
+          {/* Quick info desktop */}
+          <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 font-mono shrink-0">
             <span>282 Members</span>
             <span>•</span>
             <span className="text-emerald-400">$182,480.00 Volume</span>
@@ -147,7 +147,7 @@ export default function App() {
       </div>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-[1680px] w-full mx-auto p-4 sm:p-6">
+      <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
         {(activeTab === 'ALL' || activeTab === 'MLM') && (
           <MetricCards stats={stats} />
         )}
@@ -171,15 +171,15 @@ export default function App() {
       </main>
 
       {/* Clean Corporate Footer */}
-      <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-4 sm:px-6 text-xs text-slate-500 mt-12">
-        <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+      <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
+        <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
           <div className="flex items-center gap-2">
             <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
             <span>· Global Trade Platform</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">
-            <span>Shanghai & Mumbai Logistics Centers</span>
+            <span>Shanghai & Mumbai Port Hubs</span>
             <span>•</span>
             <a 
               href="https://shipzo.netlify.app/" 

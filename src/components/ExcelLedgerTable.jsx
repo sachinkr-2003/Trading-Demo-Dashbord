@@ -63,58 +63,60 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
   const totalBon = filteredData.reduce((sum, item) => sum + item.levelBonus, 0);
 
   return (
-    <div className="square-card p-4 mb-6">
+    <div className="square-card p-3 sm:p-4 mb-6">
       {/* Spreadsheet Header Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#1E2430] mb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E2430] mb-3">
         <div className="flex items-center gap-2">
-          <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+          <FileSpreadsheet className="w-4 h-4 text-emerald-400 shrink-0" />
           <span className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
-            Member Downline & Earnings Spreadsheet
+            Member Downline Ledger
           </span>
           <span className="text-[11px] text-slate-500 font-mono">
-            (282 total)
+            (282)
           </span>
         </div>
 
         {/* Toolbar Controls */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Search box */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-initial min-w-[140px]">
             <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
-              placeholder="Search member, ID..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-[#0A0D14] border border-[#1E2430] pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none w-52 focus:border-slate-500 font-mono"
+              className="w-full sm:w-48 bg-[#0A0D14] border border-[#1E2430] pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-slate-500 font-mono"
             />
           </div>
 
-          {/* Export to CSV */}
-          <button
-            onClick={handleExportCSV}
-            className="square-btn px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs flex items-center gap-1.5"
-            title="Download CSV"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export CSV</span>
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* Export to CSV */}
+            <button
+              onClick={handleExportCSV}
+              className="square-btn px-2.5 sm:px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs flex items-center gap-1"
+              title="Download CSV"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">CSV</span>
+            </button>
 
-          {/* Add member button */}
-          <button
-            onClick={onAddMemberClick}
-            className="square-btn px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs flex items-center gap-1.5"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Member</span>
-          </button>
+            {/* Add member button */}
+            <button
+              onClick={onAddMemberClick}
+              className="square-btn px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs flex items-center gap-1"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-1 border-b border-[#1E2430] mb-3 text-xs">
+      {/* Filter Tabs (Horizontal scroll on mobile) */}
+      <div className="flex items-center gap-1 border-b border-[#1E2430] mb-3 text-xs overflow-x-auto whitespace-nowrap scrollbar-none">
         {[
-          { key: 'ALL', label: 'All Members (282)' },
+          { key: 'ALL', label: 'All (282)' },
           { key: 'ACTIVE', label: 'Active (201)' },
           { key: 'INACTIVE', label: 'Inactive (81)' },
           { key: 'BLOCKED', label: 'Blocked (0)' },
@@ -122,7 +124,7 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
           <button
             key={tab.key}
             onClick={() => setFilterStatus(tab.key)}
-            className={`px-3 py-1.5 text-xs border-b-2 font-medium ${
+            className={`px-3 py-1.5 text-xs border-b-2 font-medium shrink-0 ${
               filterStatus === tab.key
                 ? 'text-white border-white'
                 : 'text-slate-400 border-transparent hover:text-slate-200'
@@ -133,9 +135,9 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
         ))}
       </div>
 
-      {/* Spreadsheet Table */}
+      {/* Spreadsheet Table with smooth horizontal scroll container */}
       <div className="overflow-x-auto border border-[#1E2430]">
-        <table className="excel-table text-left">
+        <table className="excel-table text-left min-w-[700px]">
           <thead>
             <tr>
               <th className="w-10 text-center">#</th>
@@ -167,13 +169,13 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
                   <td className="text-slate-400 font-mono text-[11px]">{m.date}</td>
                   <td className="text-slate-300 text-[11px]">{m.package}</td>
                   <td className="text-right font-mono font-medium text-white">
-                    ${m.investment.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    ${m.investment.toLocaleString('en-US', { minimumFractionDigits: 0 })}
                   </td>
                   <td className="text-right font-mono text-emerald-400 font-medium">
                     +${m.dailyRoi.toFixed(2)}
                   </td>
                   <td className="text-right font-mono text-slate-200">
-                    ${m.levelBonus.toFixed(2)}
+                    ${m.levelBonus.toFixed(0)}
                   </td>
                   <td className="font-mono text-slate-400 text-[11px]">{m.sponsor}</td>
                   <td className="text-center">
@@ -203,17 +205,17 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
           {/* Table Totals Row */}
           <tfoot>
             <tr className="bg-[#0E121A] font-semibold text-xs font-mono">
-              <td colSpan="5" className="text-right text-slate-400 uppercase">
+              <td colSpan="5" className="text-right text-slate-400 uppercase text-[11px]">
                 Totals:
               </td>
               <td className="text-right text-white">
-                ${totalInv.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                ${totalInv.toLocaleString('en-US', { minimumFractionDigits: 0 })}
               </td>
               <td className="text-right text-emerald-400">
                 +${totalRoi.toFixed(2)}
               </td>
               <td className="text-right text-slate-200">
-                ${totalBon.toFixed(2)}
+                ${totalBon.toFixed(0)}
               </td>
               <td colSpan="3" className="text-center text-slate-500 text-[11px]">
                 {filteredData.length} records

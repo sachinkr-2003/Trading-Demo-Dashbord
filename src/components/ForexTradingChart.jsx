@@ -34,7 +34,7 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
   useEffect(() => {
     let base = selectedPair.base;
     let seed = 42;
-    const count = 40;
+    const count = 35;
     const generated = [];
     let prevClose = base;
 
@@ -106,7 +106,7 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
 
   const width = 800;
   const height = 280;
-  const padding = 20;
+  const padding = 16;
 
   const minVal = candles.length ? Math.min(...candles.map(c => c.low)) : 1;
   const maxVal = candles.length ? Math.max(...candles.map(c => c.high)) : 2;
@@ -115,23 +115,23 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
   const getY = (val) => height - padding - ((val - minVal) / range) * (height - padding * 2);
 
   return (
-    <div className="square-card p-4 mb-6">
-      {/* Top Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1E2430] pb-3 mb-4">
+    <div className="square-card p-3 sm:p-4 mb-6">
+      {/* Top Controls Bar: horizontal scrollable on mobile */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-[#1E2430] pb-3 mb-3 sm:mb-4">
         {/* Pair tabs */}
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
           {PAIRS.map((pair) => (
             <button
               key={pair.id}
               onClick={() => setSelectedPair(pair)}
-              className={`square-btn px-2.5 py-1 text-xs border ${
+              className={`square-btn px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs border shrink-0 ${
                 selectedPair.id === pair.id
                   ? 'bg-[#1E2430] text-white border-slate-600 font-semibold'
                   : 'bg-[#0E121A] text-slate-400 border-[#1E2430] hover:text-white'
               }`}
             >
               <span>{pair.id}</span>
-              <span className={`text-[10px] ml-1.5 ${pair.chg.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'}`}>
+              <span className={`text-[9px] sm:text-[10px] ml-1 ${pair.chg.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {pair.chg}
               </span>
             </button>
@@ -139,13 +139,13 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
         </div>
 
         {/* Timeframes and Chart Type */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
           <div className="flex border border-[#1E2430] bg-[#0E121A]">
             {TIMEFRAMES.map((tf) => (
               <button
                 key={tf}
                 onClick={() => setSelectedTf(tf)}
-                className={`square-btn px-2.5 py-1 text-[11px] ${
+                className={`square-btn px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-[11px] ${
                   selectedTf === tf ? 'bg-slate-700 text-white font-medium' : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -157,13 +157,13 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
           <div className="flex border border-[#1E2430] bg-[#0E121A]">
             <button
               onClick={() => setChartType('candles')}
-              className={`square-btn px-2.5 py-1 text-[11px] ${chartType === 'candles' ? 'bg-slate-700 text-white font-medium' : 'text-slate-400'}`}
+              className={`square-btn px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-[11px] ${chartType === 'candles' ? 'bg-slate-700 text-white font-medium' : 'text-slate-400'}`}
             >
               Candles
             </button>
             <button
               onClick={() => setChartType('area')}
-              className={`square-btn px-2.5 py-1 text-[11px] ${chartType === 'area' ? 'bg-slate-700 text-white font-medium' : 'text-slate-400'}`}
+              className={`square-btn px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-[11px] ${chartType === 'area' ? 'bg-slate-700 text-white font-medium' : 'text-slate-400'}`}
             >
               Area
             </button>
@@ -172,30 +172,30 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
       </div>
 
       {/* Grid: Chart Canvas (Left) + Order Entry (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Chart View */}
-        <div className="lg:col-span-3 bg-[#0A0D14] border border-[#181E29] p-3 flex flex-col justify-between">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-2 pb-2 border-b border-[#141A24]">
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-sm text-white">{selectedPair.name}</span>
-              <span className="text-[11px] text-slate-400">Spread: {selectedPair.spread} pip</span>
-              <span className="font-mono text-lg font-bold text-emerald-400">
+        <div className="lg:col-span-3 bg-[#0A0D14] border border-[#181E29] p-2.5 sm:p-3 flex flex-col justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2 pb-2 border-b border-[#141A24]">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="font-semibold text-xs sm:text-sm text-white">{selectedPair.name}</span>
+              <span className="text-[10px] sm:text-[11px] text-slate-400 hidden xs:inline">Spread: {selectedPair.spread} pip</span>
+              <span className="font-mono text-base sm:text-lg font-bold text-emerald-400">
                 {currentPrice}
               </span>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] font-mono text-slate-400">
               <span className="text-emerald-400">{selectedPair.sentiment}% Buy</span>
-              <div className="w-20 h-1.5 bg-slate-800 flex">
+              <div className="w-16 sm:w-20 h-1.5 bg-slate-800 flex">
                 <div style={{ width: `${selectedPair.sentiment}%` }} className="bg-emerald-500 h-full"></div>
               </div>
               <span className="text-rose-400">{100 - selectedPair.sentiment}% Sell</span>
             </div>
           </div>
 
-          {/* SVG Canvas */}
-          <div className="relative w-full h-[270px] bg-[#0A0D14] overflow-hidden">
-            <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
+          {/* SVG Canvas (Mobile Responsive Height) */}
+          <div className="relative w-full h-[220px] sm:h-[270px] bg-[#0A0D14] overflow-hidden">
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full preserve-3d">
               {/* Candlesticks */}
               {chartType === 'candles' && candles.map((c, i) => {
                 const candleWidth = (width - padding * 2) / candles.length;
@@ -271,7 +271,7 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
             </svg>
 
             {hoveredCandle && (
-              <div className="absolute top-2 left-2 bg-[#12161F] border border-[#1E2430] px-2 py-1 text-[11px] font-mono text-slate-300 pointer-events-none flex items-center gap-3">
+              <div className="absolute top-2 left-2 bg-[#12161F] border border-[#1E2430] px-2 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-mono text-slate-300 pointer-events-none flex items-center gap-2 sm:gap-3">
                 <span>O: {hoveredCandle.open.toFixed(4)}</span>
                 <span>H: {hoveredCandle.high.toFixed(4)}</span>
                 <span>L: {hoveredCandle.low.toFixed(4)}</span>
@@ -281,18 +281,18 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
           </div>
         </div>
 
-        {/* Order Terminal (Right) */}
+        {/* Order Terminal (Right on desktop, below on mobile) */}
         <div className="bg-[#0A0D14] border border-[#181E29] p-3 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-[#141A24] mb-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[#141A24] mb-2.5">
               <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
                 Order Placement
               </span>
-              <span className="text-[10px] text-slate-500">Market Execution</span>
+              <span className="text-[10px] text-slate-500">Instant</span>
             </div>
 
             {/* Lot size */}
-            <div className="mb-3">
+            <div className="mb-2.5">
               <label className="text-[11px] text-slate-400 block mb-1">
                 Lot Size
               </label>
@@ -312,7 +312,7 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
             </div>
 
             {/* Leverage */}
-            <div className="mb-3">
+            <div className="mb-2.5">
               <label className="text-[11px] text-slate-400 block mb-1">
                 Leverage
               </label>
@@ -332,14 +332,14 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
             </div>
 
             {/* Margin Info */}
-            <div className="bg-[#10141C] border border-[#181E29] p-2.5 mb-3 text-[11px] font-mono space-y-1">
+            <div className="bg-[#10141C] border border-[#181E29] p-2 mb-2.5 text-[11px] font-mono space-y-1">
               <div className="flex justify-between text-slate-400">
-                <span>Margin Required:</span>
+                <span>Margin:</span>
                 <span className="text-white font-medium">${(parseFloat(lotSize) * 500).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Pip Value:</span>
-                <span className="text-slate-300">${(parseFloat(lotSize) * 10).toFixed(2)} / pip</span>
+                <span className="text-slate-300">${(parseFloat(lotSize) * 10).toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -367,20 +367,20 @@ export default function ForexTradingChart({ onOrderPlaced, walletBalance }) {
         </div>
       </div>
 
-      {/* Open Positions List */}
+      {/* Open Positions List with smooth horizontal scrolling on mobile */}
       {openPositions.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-[#1E2430]">
+        <div className="mt-3 sm:mt-4 pt-3 border-t border-[#1E2430]">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">
               Open Positions ({openPositions.length})
             </span>
             <span className="text-xs font-mono text-emerald-400">
-              Unrealized P&L: +${openPositions.reduce((acc, p) => acc + p.pnl, 0).toFixed(2)}
+              PnL: +${openPositions.reduce((acc, p) => acc + p.pnl, 0).toFixed(2)}
             </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="excel-table text-left border-collapse">
+          <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+            <table className="excel-table text-left border-collapse min-w-[540px]">
               <thead>
                 <tr>
                   <th>Order ID</th>

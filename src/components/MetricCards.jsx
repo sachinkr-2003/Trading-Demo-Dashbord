@@ -2,14 +2,14 @@ import React from 'react';
 import { 
   DollarSign, 
   Clock, 
-  CreditCard,
-  WalletCards,
+  CreditCard, 
+  WalletCards, 
   Users, 
   UserCheck, 
   UserX, 
   ShieldAlert, 
   Award, 
-  CheckCircle2
+  CheckCircle2 
 } from 'lucide-react';
 
 export default function MetricCards({ stats }) {
@@ -52,7 +52,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-slate-800 text-slate-300',
       badge: '2 Lots',
       badgeType: 'neutral',
-      sub: 'Container allocations'
+      sub: 'Container lots'
     },
     {
       id: 'total-member',
@@ -62,7 +62,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-slate-800 text-slate-300',
       badge: 'Network',
       badgeType: 'neutral',
-      sub: 'Total downline team'
+      sub: 'Downline team'
     },
     {
       id: 'active-member',
@@ -72,7 +72,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-emerald-500/10 text-emerald-400',
       badge: 'Active',
       badgeType: 'pos',
-      sub: 'Generating daily ROI'
+      sub: 'Generating ROI'
     },
     {
       id: 'inactive-member',
@@ -82,7 +82,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-slate-800 text-slate-400',
       badge: 'Pending',
       badgeType: 'neutral',
-      sub: 'Verification pending'
+      sub: 'Unverified'
     },
     {
       id: 'block-member',
@@ -92,7 +92,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-slate-800 text-slate-400',
       badge: 'Clear',
       badgeType: 'neutral',
-      sub: 'No flagged accounts'
+      sub: 'Zero flagged'
     },
     {
       id: 'rank-rewards',
@@ -102,7 +102,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-amber-500/10 text-amber-400',
       badge: 'Diamond',
       badgeType: 'gold',
-      sub: 'Global Tier 4 leader'
+      sub: 'Tier 4 Leader'
     },
     {
       id: 'paid-withdrawal',
@@ -112,7 +112,7 @@ export default function MetricCards({ stats }) {
       iconBg: 'bg-slate-800 text-slate-300',
       badge: 'Settled',
       badgeType: 'neutral',
-      sub: 'Processed to wallet'
+      sub: 'Wallet payouts'
     },
   ];
 
@@ -122,38 +122,38 @@ export default function MetricCards({ stats }) {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
           Account Overview
         </h2>
-        <span className="text-[11px] text-slate-500">Live Updates</span>
+        <span className="text-[11px] text-slate-500">Live Telemetry</span>
       </div>
 
-      {/* Grid of 10 clean square cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      {/* Grid: 2 columns on mobile (just like the screenshot!), 3 on tablet, 5 on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.id}
-              className="square-card p-3.5 flex flex-col justify-between hover:border-[#2D3748] transition-colors"
+              className="square-card p-3 sm:p-3.5 flex flex-col justify-between hover:border-[#2D3748] transition-colors"
             >
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-slate-400">
+                <div className="flex items-start justify-between gap-1.5 mb-1.5 sm:mb-2">
+                  <span className="text-[11px] sm:text-xs font-medium text-slate-400 leading-tight">
                     {card.title}
                   </span>
-                  <div className={`w-6 h-6 flex items-center justify-center ${card.iconBg}`}>
-                    <Icon className="w-3.5 h-3.5" />
+                  <div className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 flex items-center justify-center ${card.iconBg}`}>
+                    <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   </div>
                 </div>
 
-                <div className="font-mono text-xl font-bold text-white tracking-tight mb-2">
+                <div className="font-mono text-base sm:text-xl font-bold text-white tracking-tight mb-1 sm:mb-2 truncate">
                   {card.value}
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-[#181E29] flex items-center justify-between text-[11px]">
-                <span className="text-slate-500 text-[10px] truncate max-w-[110px]">
+              <div className="pt-1.5 sm:pt-2 border-t border-[#181E29] flex items-center justify-between text-[10px] sm:text-[11px] gap-1">
+                <span className="text-slate-500 text-[10px] truncate max-w-[75px] sm:max-w-[110px] hidden xs:inline">
                   {card.sub}
                 </span>
-                <span className={`px-1.5 py-0.2 text-[10px] font-medium ${
+                <span className={`px-1.5 py-0.2 text-[9px] sm:text-[10px] font-medium ml-auto ${
                   card.badgeType === 'pos' 
                     ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-800/50' 
                     : card.badgeType === 'gold'
