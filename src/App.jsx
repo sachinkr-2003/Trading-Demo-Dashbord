@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import MetricCards from './components/MetricCards';
 import ForexTradingChart from './components/ForexTradingChart';
 import MLMNetworkSection from './components/MLMNetworkSection';
 import ExcelLedgerTable from './components/ExcelLedgerTable';
+import SettingsPage from './components/SettingsPage';
+import WalletPage from './components/WalletPage';
+import LoginPage from './components/LoginPage';
 import { DepositModal, WithdrawModal, AddMemberModal } from './components/Modals';
 import { 
-  Layers, 
-  TrendingUp, 
-  Users, 
-  FileSpreadsheet,
   CheckCircle2,
   ExternalLink
 } from 'lucide-react';
 
 export default function App() {
   const [walletBalance, setWalletBalance] = useState(111941.50);
+  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'trading', 'network', 'ledger', 'wallet', 'settings', 'login'
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   const [stats, setStats] = useState({
     totalIncome: 182480.00,
     todayIncome: 0.00,
@@ -28,8 +32,6 @@ export default function App() {
     rankRewards: 26036.33,
     paidWithdrawal: 24734.50,
   });
-
-  const [activeTab, setActiveTab] = useState('ALL');
 
   // Modals state
   const [isDepositOpen, setIsDepositOpen] = useState(false);
@@ -88,8 +90,14 @@ export default function App() {
     showToast(`Member ${member.name} (${member.id}) added to ledger.`);
   };
 
+  const handleLoginSuccess = (user) => {
+    setIsLoggedIn(true);
+    setCurrentPage('dashboard');
+    showToast(`Welcome back, ${user.name}!`);
+  };
+
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex font-sans overflow-x-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
@@ -98,104 +106,147 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Header */}
-      <Header
+      {/* Sidebar Drawer */}
+      <Sidebar
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
         walletBalance={walletBalance}
-        tickerData={tickerData}
-        onOpenDeposit={() => setIsDepositOpen(true)}
-        onOpenWithdraw={() => setIsWithdrawOpen(true)}
       />
 
-      {/* Sub Navigation Bar (Mobile Swipeable Tabs) */}
-      <div className="border-b border-[#1E2430] bg-[#0E121A]">
-        <div className="max-w-[1680px] mx-auto px-3 sm:px-6 py-2 flex items-center justify-between gap-3">
-          {/* Tabs */}
-          <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 w-full sm:w-auto">
-            {[
-              { id: 'ALL', label: 'Overview', icon: Layers },
-              { id: 'TRADING', label: 'Trading Chart', icon: TrendingUp },
-              { id: 'MLM', label: 'Affiliates', icon: Users },
-              { id: 'EXCEL', label: 'Member Ledger', icon: FileSpreadsheet },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`square-btn px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1.5 border shrink-0 ${
-                    activeTab === tab.id
-                      ? 'bg-[#1E2430] text-white border-slate-600 font-medium'
-                      : 'bg-transparent text-slate-400 border-transparent hover:text-white'
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
+      {/* Main Layout Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Header */}
+        <Header
+          walletBalance={walletBalance}
+          tickerData={tickerData}
+          onOpenDeposit={() => setIsDepositOpen(true)}
+          onOpenWithdraw={() => setIsWithdrawOpen(true)}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onNavigateSettings={() => setCurrentPage('settings')}
+          onNavigateLogin={() => setCurrentPage('login')}
+          isLoggedIn={isLoggedIn}
+        />
 
-          {/* Quick info desktop */}
-          <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 font-mono shrink-0">
-            <span>282 Members</span>
-            <span>•</span>
-            <span className="text-emerald-400">$182,480.00 Volume</span>
-            <span>•</span>
-            <span className="text-amber-400">Diamond Tier</span>
+        {/* Dynamic Page Router */}
+        <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
+          {/* 1. Full Dashboard Overview */}
+          {currentPage === 'dashboard' && (
+            <>
+              <MetricCards stats={stats} />
+              <ForexTradingChart
+                walletBalance={walletBalance}
+                onOrderPlaced={handleOrderPlaced}
+              />
+              <MLMNetworkSection />
+              <ExcelLedgerTable
+                onAddMemberClick={() => setIsAddMemberOpen(true)}
+              />
+            </>
+          )}
+
+          {/* 2. Trading Terminal Only */}
+          {currentPage === 'trading' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
+                <div>
+                  <h2 className="text-base font-bold text-white">Forex & Freight Trading Terminal</h2>
+                  <p className="text-xs text-slate-400">Institutional order execution and live chart analysis</p>
+                </div>
+              </div>
+              <ForexTradingChart
+                walletBalance={walletBalance}
+                onOrderPlaced={handleOrderPlaced}
+              />
+            </div>
+          )}
+
+          {/* 3. My Network & MLM */}
+          {currentPage === 'network' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
+                <div>
+                  <h2 className="text-base font-bold text-white">Downline Affiliate & MLM Hierarchy</h2>
+                  <p className="text-xs text-slate-400">Manage 4-tier network volume, matching bonuses, and sponsor referral links</p>
+                </div>
+              </div>
+              <MLMNetworkSection />
+              <ExcelLedgerTable
+                onAddMemberClick={() => setIsAddMemberOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* 4. Excel Ledger Spreadsheet */}
+          {currentPage === 'ledger' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1E2430]">
+                <div>
+                  <h2 className="text-base font-bold text-white">Excel Member Ledger (.XLSX)</h2>
+                  <p className="text-xs text-slate-400">Exportable database of active, inactive, and blocked downline accounts</p>
+                </div>
+              </div>
+              <ExcelLedgerTable
+                onAddMemberClick={() => setIsAddMemberOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* 5. Wallet & Payouts */}
+          {currentPage === 'wallet' && (
+            <WalletPage
+              walletBalance={walletBalance}
+              onOpenDeposit={() => setIsDepositOpen(true)}
+              onOpenWithdraw={() => setIsWithdrawOpen(true)}
+            />
+          )}
+
+          {/* 6. Settings Page */}
+          {currentPage === 'settings' && (
+            <SettingsPage
+              onSave={(msg) => showToast(msg)}
+            />
+          )}
+
+          {/* 7. Login / Register Page */}
+          {currentPage === 'login' && (
+            <LoginPage
+              onLoginSuccess={handleLoginSuccess}
+              onCancel={() => setCurrentPage('dashboard')}
+            />
+          )}
+        </main>
+
+        {/* Corporate Footer */}
+        <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
+          <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
+              <span>· Global Trade Platform</span>
+            </div>
+
+            <div className="flex items-center gap-4 text-[11px]">
+              <span>Shanghai & Mumbai Port Hubs</span>
+              <span>•</span>
+              <a 
+                href="https://shipzo.netlify.app/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-slate-400 hover:text-white flex items-center gap-1"
+              >
+                shipzo.netlify.app <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+
+            <div className="text-[11px]">
+              © 2026 Shipzo Containers Co., Ltd.
+            </div>
           </div>
-        </div>
+        </footer>
       </div>
-
-      {/* Main Container */}
-      <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
-        {(activeTab === 'ALL' || activeTab === 'MLM') && (
-          <MetricCards stats={stats} />
-        )}
-
-        {(activeTab === 'ALL' || activeTab === 'TRADING') && (
-          <ForexTradingChart
-            walletBalance={walletBalance}
-            onOrderPlaced={handleOrderPlaced}
-          />
-        )}
-
-        {(activeTab === 'ALL' || activeTab === 'MLM') && (
-          <MLMNetworkSection />
-        )}
-
-        {(activeTab === 'ALL' || activeTab === 'EXCEL') && (
-          <ExcelLedgerTable
-            onAddMemberClick={() => setIsAddMemberOpen(true)}
-          />
-        )}
-      </main>
-
-      {/* Clean Corporate Footer */}
-      <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
-        <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
-            <span>· Global Trade Platform</span>
-          </div>
-
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>Shanghai & Mumbai Port Hubs</span>
-            <span>•</span>
-            <a 
-              href="https://shipzo.netlify.app/" 
-              target="_blank" 
-              rel="noreferrer"
-              className="text-slate-400 hover:text-white flex items-center gap-1"
-            >
-              shipzo.netlify.app <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-
-          <div className="text-[11px]">
-            © 2026 Shipzo Containers Co., Ltd.
-          </div>
-        </div>
-      </footer>
 
       {/* Modals */}
       <DepositModal
