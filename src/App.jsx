@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import DashboardOverview from './components/DashboardOverview';
+import MetricCards from './components/MetricCards';
 import ForexTradingChart from './components/ForexTradingChart';
 import MLMNetworkSection from './components/MLMNetworkSection';
 import ExcelLedgerTable from './components/ExcelLedgerTable';
@@ -133,7 +133,7 @@ export default function App() {
 
       {/* Main Content Area (Offset by lg:pl-64 for fixed sidebar) */}
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
-        {/* Top Header */}
+        {/* Top Header with Official Logo */}
         <Header
           walletBalance={walletBalance}
           tickerData={tickerData}
@@ -147,18 +147,29 @@ export default function App() {
 
         {/* Dynamic Route Pages */}
         <main className="flex-1 max-w-[1680px] w-full mx-auto p-3 sm:p-6">
-          {/* 1. Dashboard Clean Executive Overview */}
+          {/* 1. Dashboard: Full Functional Platform Restored */}
           {currentPage === 'dashboard' && (
-            <DashboardOverview
-              stats={stats}
-              walletBalance={walletBalance}
-              onOpenDeposit={() => setIsDepositOpen(true)}
-              onOpenWithdraw={() => setIsWithdrawOpen(true)}
-              onNavigate={(page) => setCurrentPage(page)}
-            />
+            <div className="space-y-6">
+              {/* 10 Core Metric Cards */}
+              <MetricCards stats={stats} />
+
+              {/* Full Interactive Candlestick Trading Terminal */}
+              <ForexTradingChart
+                walletBalance={walletBalance}
+                onOrderPlaced={handleOrderPlaced}
+              />
+
+              {/* Full 4-Tier Affiliate & Referral Structure */}
+              <MLMNetworkSection />
+
+              {/* Full Excel Downline Member Spreadsheet with CSV Export */}
+              <ExcelLedgerTable
+                onAddMemberClick={() => setIsAddMemberOpen(true)}
+              />
+            </div>
           )}
 
-          {/* 2. Full Trading Terminal */}
+          {/* 2. Trading Terminal Only */}
           {currentPage === 'trading' && (
             <div className="space-y-4">
               <div className="pb-3 border-b border-[#1E2430]">
@@ -244,12 +255,20 @@ export default function App() {
           )}
         </main>
 
-        {/* Clean Corporate Footer */}
+        {/* Corporate Footer with Official Logo */}
         <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
           <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
-            <div className="flex items-center gap-2">
-              <span className="text-slate-300 font-medium">SHIPZO CONTAINERS & FOREX</span>
-              <span>· Global Logistics & Financial Market Access</span>
+            <div className="flex items-center gap-3">
+              <div className="bg-white px-2 py-0.5 border border-slate-300/30">
+                <img 
+                  src="/shipzo-logo.png" 
+                  alt="SHIPZO Logo" 
+                  className="h-6 w-auto object-contain"
+                />
+              </div>
+              <span className="text-slate-400 text-[11px]">
+                Smart Logistics. Global Reach.
+              </span>
             </div>
 
             <div className="flex items-center gap-4 text-[11px]">

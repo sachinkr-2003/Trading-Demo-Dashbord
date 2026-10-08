@@ -5,7 +5,6 @@ import {
   ArrowDownRight, 
   Plus, 
   ArrowDownLeft, 
-  Ship,
   CheckCircle2,
   Menu
 } from 'lucide-react';
@@ -22,11 +21,11 @@ export default function Header({
 }) {
   return (
     <header className="border-b border-[#1E2430] bg-[#0E121A] sticky top-0 z-30">
-      {/* Subtle Live Forex / Freight Ticker (Horizontal scrollable) */}
+      {/* Subtle Live Forex / Freight Ticker */}
       <div className="bg-[#0A0D14] border-b border-[#181E29] px-3 sm:px-4 py-1.5 flex items-center justify-between text-[11px] text-slate-400 overflow-x-auto whitespace-nowrap gap-4 sm:gap-6 font-mono scrollbar-none">
         <div className="flex items-center gap-1.5 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="text-slate-300 font-medium text-[10px] sm:text-[11px]">MARKET</span>
+          <span className="text-slate-300 font-medium text-[10px] sm:text-[11px]">MARKET LIVE</span>
         </div>
         
         <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto py-0.5">
@@ -51,9 +50,9 @@ export default function Header({
       </div>
 
       {/* Main Navigation */}
-      <div className="max-w-[1680px] mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Left: Hamburger Button + Brand */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div className="max-w-[1680px] mx-auto px-3 sm:px-6 py-2 flex items-center justify-between gap-2 sm:gap-4">
+        {/* Left: Hamburger Button + Official Shipzo Logo */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
           <button
             onClick={onToggleSidebar}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-[#1A202C] square-btn border border-[#1E2430]"
@@ -62,24 +61,22 @@ export default function Header({
             <Menu className="w-4 h-4" />
           </button>
 
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#8B1E2F] flex items-center justify-center text-white shrink-0">
-              <Ship className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-base font-bold text-white tracking-tight">SHIPZO</span>
-                <span className="text-[10px] sm:text-[11px] text-slate-400 hidden xs:inline">Forex</span>
-              </div>
-              <p className="text-[9px] sm:text-[10px] text-slate-500 hidden sm:block">Trading & Member Portal</p>
+          {/* Official Shipzo Logo */}
+          <div className="flex items-center">
+            <div className="bg-white px-2 py-0.5 flex items-center justify-center border border-slate-300/30 shadow-xs h-9 sm:h-10">
+              <img 
+                src="/shipzo-logo.png" 
+                alt="SHIPZO Containers & Forex" 
+                className="h-8 sm:h-9 w-auto object-contain"
+              />
             </div>
           </div>
         </div>
 
         {/* Right Section: Balance & Actions */}
         <div className="flex items-center gap-1.5 sm:gap-3">
-          {/* Mobile Balance Pill */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 bg-[#12161F] border border-[#1E2430] px-2 sm:px-3 py-1 sm:py-1.5">
+          {/* Balance Pill */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 bg-[#12161F] border border-[#1E2430] px-2.5 sm:px-3 py-1 sm:py-1.5">
             <Wallet className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400" />
             <div>
               <div className="text-[9px] text-slate-400 uppercase tracking-wider hidden sm:block">Balance</div>
@@ -92,22 +89,22 @@ export default function Header({
           {/* Deposit Button */}
           <button 
             onClick={onOpenDeposit}
-            className="square-btn bg-emerald-600 hover:bg-emerald-500 text-white px-2 sm:px-3 py-1 sm:py-1.5 text-xs flex items-center gap-1"
+            className="square-btn bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1"
           >
-            <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            <Plus className="w-3.5 h-3.5" />
             <span className="hidden xs:inline">Deposit</span>
           </button>
 
           {/* Withdraw Button */}
           <button 
             onClick={onOpenWithdraw}
-            className="square-btn bg-[#1A202C] hover:bg-[#222A3A] text-slate-200 border border-[#2D3748] px-2 sm:px-3 py-1 sm:py-1.5 text-xs flex items-center gap-1"
+            className="square-btn bg-[#1A202C] hover:bg-[#222A3A] text-slate-200 border border-[#2D3748] px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1"
           >
-            <ArrowDownLeft className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            <ArrowDownLeft className="w-3.5 h-3.5" />
             <span className="hidden xs:inline">Withdraw</span>
           </button>
 
-          {/* User profile avatar (Clickable to Settings) */}
+          {/* User profile avatar */}
           <div className="flex items-center gap-1.5 pl-1 sm:pl-2 border-l border-[#1E2430]">
             {isLoggedIn ? (
               <button

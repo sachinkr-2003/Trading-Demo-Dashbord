@@ -4,18 +4,16 @@ import {
   TrendingUp, 
   Package,
   Users, 
-  GitFork,
+  GitFork, 
   FileSpreadsheet, 
-  Award,
+  Award, 
   Wallet, 
-  FileText,
+  FileText, 
   Settings, 
   LogOut, 
-  LogIn,
-  Ship,
-  X,
-  ShieldCheck,
-  ChevronRight
+  LogIn, 
+  X, 
+  ShieldCheck 
 } from 'lucide-react';
 
 export default function Sidebar({ 
@@ -77,30 +75,24 @@ export default function Sidebar({
         />
       )}
 
-      {/* FIXED Sidebar (Always fixed on left side) */}
+      {/* FIXED Left Sidebar */}
       <aside className={`
         fixed top-0 bottom-0 left-0 z-50 w-64 bg-[#0A0D14] border-r border-[#1E2430] flex flex-col justify-between transition-transform duration-200 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        {/* Top Branding */}
-        <div className="h-16 px-4 border-b border-[#1E2430] flex items-center justify-between shrink-0 bg-[#0E121A]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-[#8B1E2F] flex items-center justify-center text-white shrink-0">
-              <Ship className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-bold text-sm tracking-tight text-white block leading-tight">
-                SHIPZO
-              </span>
-              <span className="text-[10px] text-slate-400 block font-mono">
-                Containers & Forex
-              </span>
-            </div>
+        {/* Top Branding with Official Logo */}
+        <div className="h-16 px-3 border-b border-[#1E2430] flex items-center justify-between shrink-0 bg-[#0E121A]">
+          <div className="bg-white px-2 py-1 flex items-center justify-center border border-slate-300/30 h-10 w-full max-w-[200px]">
+            <img 
+              src="/shipzo-logo.png" 
+              alt="SHIPZO Containers & Forex" 
+              className="h-8 w-auto object-contain"
+            />
           </div>
 
           <button 
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-1 text-slate-400 hover:text-white"
+            className="lg:hidden p-1 text-slate-400 hover:text-white shrink-0 ml-2"
           >
             <X className="w-5 h-5" />
           </button>

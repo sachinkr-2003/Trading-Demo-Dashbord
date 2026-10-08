@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { 
-  Ship, 
   Lock, 
   Mail, 
   ShieldCheck, 
   ArrowRight, 
-  User, 
-  CheckCircle2, 
-  AlertCircle 
+  User
 } from 'lucide-react';
 
 export default function LoginPage({ onLoginSuccess, onCancel }) {
-  const [tab, setTab] = useState('login'); // 'login' or 'register'
+  const [tab, setTab] = useState('login');
   const [email, setEmail] = useState('gaurav@shipzo.international');
   const [password, setPassword] = useState('••••••••••••');
   const [rememberMe, setRememberMe] = useState(true);
@@ -38,14 +35,15 @@ export default function LoginPage({ onLoginSuccess, onCancel }) {
   return (
     <div className="min-h-[85vh] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#12161F] border border-[#1E2430] p-6 sm:p-8">
-        {/* Brand Header */}
+        {/* Official Brand Logo */}
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-12 h-12 bg-[#8B1E2F] flex items-center justify-center text-white mb-3 shadow-sm">
-            <Ship className="w-6 h-6" />
+          <div className="bg-white p-2.5 border border-slate-300/30 mb-3 w-48 flex items-center justify-center shadow-xs">
+            <img 
+              src="/shipzo-logo.png" 
+              alt="SHIPZO Containers & Forex" 
+              className="h-16 w-auto object-contain"
+            />
           </div>
-          <h2 className="text-xl font-bold tracking-tight text-white">
-            SHIPZO CONTAINERS & FOREX
-          </h2>
           <p className="text-xs text-slate-400 mt-1">
             Global Trade & Downline Affiliate Terminal
           </p>
