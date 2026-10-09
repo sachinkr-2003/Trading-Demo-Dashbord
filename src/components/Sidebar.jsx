@@ -22,7 +22,7 @@ export default function Sidebar({
   isOpen, 
   setIsOpen,
   isLoggedIn,
-  setIsLoggedIn,
+  onLogout,
   currentUser,
   walletBalance 
 }) {
@@ -84,21 +84,21 @@ export default function Sidebar({
         fixed top-0 bottom-0 left-0 z-50 w-64 bg-[#0A0D14] border-r border-[#1E2430] flex flex-col justify-between transition-transform duration-200 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        {/* Top Branding with Official Logo */}
-        <div className="h-16 px-3 border-b border-[#1E2430] flex items-center justify-between shrink-0 bg-[#0E121A]">
-          <div className="bg-white px-2 py-1 flex items-center justify-center border border-slate-300/30 h-10 w-full max-w-[200px]">
+        {/* Top Branding with Official Logo (Theme Matching) */}
+        <div className="h-16 px-3 sm:px-4 border-b border-[#1E2430] flex items-center justify-between shrink-0 bg-[#0E121A]">
+          <div className="flex items-center justify-start w-full">
             <img 
               src="/shipzo-logo.png" 
               alt="SHIPZO Containers & Forex" 
-              className="h-8 w-auto object-contain"
+              className="h-11 sm:h-12 w-auto max-w-[215px] object-contain drop-shadow-[0_0_15px_rgba(6,182,212,0.22)] hover:brightness-110 transition-all cursor-pointer"
             />
           </div>
 
           <button 
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-1 text-slate-400 hover:text-white shrink-0 ml-2"
+            className="lg:hidden p-1.5 text-slate-400 hover:text-white hover:bg-[#1A202C] shrink-0 ml-2 border border-[#1E2430]"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -178,24 +178,13 @@ export default function Sidebar({
 
         {/* Bottom Actions */}
         <div className="p-3 border-t border-[#1E2430] bg-[#0E121A] shrink-0 space-y-1.5">
-          {isLoggedIn ? (
+          {isLoggedIn && onLogout && (
             <button
-              onClick={() => {
-                setIsLoggedIn(false);
-                setCurrentPage('login');
-              }}
-              className="w-full square-btn px-2.5 py-1.5 text-xs text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/40 flex items-center gap-2"
+              onClick={onLogout}
+              className="w-full square-btn px-2.5 py-1.5 text-xs text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/40 flex items-center gap-2 cursor-pointer transition-colors"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sign Out</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => handleNav('login')}
-              className="w-full square-btn px-2.5 py-1.5 text-xs text-emerald-400 hover:bg-emerald-950/20 border border-transparent hover:border-emerald-900/40 flex items-center gap-2"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Member Login</span>
             </button>
           )}
 

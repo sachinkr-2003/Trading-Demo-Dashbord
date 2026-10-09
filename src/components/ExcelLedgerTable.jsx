@@ -5,6 +5,7 @@ import {
   Search, 
   Plus
 } from 'lucide-react';
+import { Toast } from '../utils/swal';
 
 const INITIAL_MEMBERS = [
   { id: 'SZ-1049', name: 'Vikram Mehta', date: '2026-09-14', package: 'Titanium Container Lot', investment: 10000, dailyRoi: 150.00, levelBonus: 1500.00, sponsor: 'GAURAV_VIP', status: 'ACTIVE' },
@@ -47,6 +48,10 @@ export default function ExcelLedgerTable({ onAddMemberClick }) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    Toast.fire({
+      icon: 'success',
+      title: 'Excel CSV Ledger downloaded successfully!'
+    });
   };
 
   const handleToggleStatus = (id) => {

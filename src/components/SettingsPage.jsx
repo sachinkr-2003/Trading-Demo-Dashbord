@@ -15,7 +15,7 @@ import {
 export default function SettingsPage({ onSave }) {
   const [profile, setProfile] = useState({
     name: 'Gaurav Sir',
-    email: 'gaurav@shipzo.international',
+    email: 'admin@gmail.com',
     phone: '+91 98765 43210',
     memberId: 'SZ-1001',
     rank: 'Diamond VIP Tier',

@@ -5,6 +5,7 @@ import {
   Award, 
   Share2
 } from 'lucide-react';
+import { Toast } from '../utils/swal';
 
 export default function MLMNetworkSection() {
   const [copied, setCopied] = useState(false);
@@ -13,6 +14,10 @@ export default function MLMNetworkSection() {
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
+    Toast.fire({
+      icon: 'success',
+      title: 'Referral link copied to clipboard!'
+    });
     setTimeout(() => setCopied(false), 2000);
   };
 

@@ -65,12 +65,12 @@ export default function Header({
             <Menu className="w-4 h-4" />
           </button>
 
-          {/* Official Shipzo Logo */}
-          <div className="bg-white px-2 py-0.5 flex items-center justify-center border border-slate-300/40 shadow-xs h-8 sm:h-9">
+          {/* Official Shipzo Logo (Theme Matching) */}
+          <div className="flex items-center justify-center h-9 sm:h-10 px-1">
             <img 
               src="/shipzo-logo.png" 
               alt="SHIPZO Containers & Forex" 
-              className="h-6 sm:h-7.5 w-auto object-contain max-w-[110px] sm:max-w-none"
+              className="h-8 sm:h-9 md:h-9.5 w-auto max-w-[190px] sm:max-w-[210px] object-contain drop-shadow-[0_0_12px_rgba(6,182,212,0.18)] hover:brightness-110 transition-all cursor-pointer"
             />
           </div>
 

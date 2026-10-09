@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import MetricCards from './components/MetricCards';
@@ -17,18 +17,51 @@ import {
   CheckCircle2,
   ExternalLink
 } from 'lucide-react';
+import { Toast, showConfirm, showSuccess } from './utils/swal';
 
 export default function App() {
   const [walletBalance, setWalletBalance] = useState(111941.50);
-  const [currentPage, setCurrentPage] = useState('dashboard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Authentication required first!
-  const [currentUser, setCurrentUser] = useState({
-    name: 'Gaurav Sir',
-    role: 'Diamond VIP Tier',
-    id: 'SZ-1001',
-    email: 'gaurav@shipzo.international'
+  const [currentPage, setCurrentPage] = useState(() => {
+    try {
+      const savedPage = localStorage.getItem('shipzo_page');
+      return savedPage && savedPage !== 'login' ? savedPage : 'dashboard';
+    } catch (e) {
+      return 'dashboard';
+    }
   });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    try {
+      return localStorage.getItem('shipzo_logged_in') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('shipzo_auth_user');
+      if (savedUser) return JSON.parse(savedUser);
+    } catch (e) {}
+    return {
+      name: 'Gaurav Sir',
+      role: 'Diamond VIP Tier',
+      id: 'SZ-ADMIN-1001',
+      email: 'admin@gmail.com'
+    };
+  });
+
+  // Keep persistent state in localStorage across refreshes
+  useEffect(() => {
+    try {
+      if (isLoggedIn) {
+        localStorage.setItem('shipzo_logged_in', 'true');
+        localStorage.setItem('shipzo_auth_user', JSON.stringify(currentUser));
+        if (currentPage && currentPage !== 'login') {
+          localStorage.setItem('shipzo_page', currentPage);
+        }
+      }
+    } catch (e) {}
+  }, [isLoggedIn, currentUser, currentPage]);
 
   const [stats, setStats] = useState({
     totalIncome: 182480.00,
@@ -48,14 +81,12 @@ export default function App() {
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
 
-  // Toast notification
-  const [toastMessage, setToastMessage] = useState(null);
-
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
+  // Toast notification powered by SweetAlert2
+  const showToast = (msg, icon = 'success') => {
+    Toast.fire({
+      icon,
+      title: msg
+    });
   };
 
   const tickerData = [
@@ -74,7 +105,7 @@ export default function App() {
       totalSpend: prev.totalSpend + amount,
       todaySpend: prev.todaySpend + amount,
     }));
-    showToast(`Deposit of $${amount.toLocaleString()} credited.`);
+    showSuccess('Deposit Successful!', `$${amount.toLocaleString()} has been credited to your live margin balance.`);
   };
 
   const handleWithdrawSuccess = (amount) => {
@@ -83,7 +114,7 @@ export default function App() {
       ...prev,
       paidWithdrawal: prev.paidWithdrawal + amount,
     }));
-    showToast(`Withdrawal of $${amount.toLocaleString()} submitted.`);
+    showSuccess('Withdrawal Submitted!', `$${amount.toLocaleString()} payout has been queued for blockchain transfer.`);
   };
 
   const handleOrderPlaced = (order) => {
@@ -97,7 +128,7 @@ export default function App() {
       activeMembers: prev.activeMembers + 1,
       totalIncome: prev.totalIncome + member.levelBonus,
     }));
-    showToast(`Member ${member.name} (${member.id}) added to ledger.`);
+    showSuccess('Member Added!', `Partner ${member.name} (${member.id}) enrolled in ledger.`);
   };
 
   const handleBuyPackage = (pkg) => {
@@ -107,49 +138,48 @@ export default function App() {
       totalSpend: prev.totalSpend + pkg.price,
       todaySpend: prev.todaySpend + pkg.price,
     }));
-    showToast(`Successfully purchased ${pkg.name} for $${pkg.price.toLocaleString()}!`);
+    showSuccess('Package Activated!', `Successfully acquired ${pkg.name} lot for $${pkg.price.toLocaleString()}!`);
   };
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
     setIsLoggedIn(true);
+    try {
+      localStorage.setItem('shipzo_logged_in', 'true');
+      localStorage.setItem('shipzo_auth_user', JSON.stringify(user));
+      localStorage.setItem('shipzo_page', 'dashboard');
+    } catch (e) {}
     setCurrentPage('dashboard');
     showToast(`Welcome back, ${user.name}!`);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentPage('dashboard');
-    showToast('You have been signed out.');
+  const handleLogout = async () => {
+    const result = await showConfirm(
+      'Sign Out of Terminal?', 
+      'Aapka current active trading session close ho jayega.', 
+      'Yes, Sign Out'
+    );
+
+    if (result.isConfirmed) {
+      try {
+        localStorage.removeItem('shipzo_logged_in');
+        localStorage.removeItem('shipzo_auth_user');
+        localStorage.removeItem('shipzo_page');
+      } catch (e) {}
+      setIsLoggedIn(false);
+      setCurrentPage('dashboard');
+      showToast('You have been signed out.', 'info');
+    }
   };
 
   // 1. If NOT logged in, show the full 50/50 split Login Page first as requested!
   if (!isLoggedIn) {
-    return (
-      <>
-        {/* Toast Notification */}
-        {toastMessage && (
-          <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="truncate">{toastMessage}</span>
-          </div>
-        )}
-
-        <LoginPage onLoginSuccess={handleLoginSuccess} />
-      </>
-    );
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
   }
 
   // 2. Once logged in, show the full Platform Dashboard
   return (
     <div className="min-h-screen bg-[#0B0E14] text-slate-100 flex font-sans">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-4 right-4 left-4 sm:left-auto z-50 bg-[#161B24] border border-slate-700 text-white px-3.5 py-2.5 shadow-xl flex items-center gap-2.5 text-xs">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span className="truncate">{toastMessage}</span>
-        </div>
-      )}
 
       {/* FIXED Left Sidebar */}
       <Sidebar
@@ -158,7 +188,7 @@ export default function App() {
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
+        onLogout={handleLogout}
         currentUser={currentUser}
         walletBalance={walletBalance}
       />
@@ -292,13 +322,11 @@ export default function App() {
         <footer className="border-t border-[#1E2430] bg-[#0E121A] py-5 px-3 sm:px-6 text-xs text-slate-500 mt-8 sm:mt-12">
           <div className="max-w-[1680px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
             <div className="flex items-center gap-3">
-              <div className="bg-white px-2 py-0.5 border border-slate-300/30">
-                <img 
-                  src="/shipzo-logo.png" 
-                  alt="SHIPZO Logo" 
-                  className="h-6 w-auto object-contain"
-                />
-              </div>
+              <img 
+                src="/shipzo-logo.png" 
+                alt="SHIPZO Logo" 
+                className="h-7 w-auto object-contain drop-shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+              />
               <span className="text-slate-400 text-[11px]">
                 Smart Logistics. Global Reach.
               </span>
